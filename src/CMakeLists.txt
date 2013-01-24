@@ -1,4 +1,5 @@
 add_executable(ActionCrawl
-	TutorialApplication.cpp)
+	TutorialApplication.cpp
+	BaseApplication.cpp)
 
-target_link_libraries(ActionCrawl ${OGRE_LIBRARIES})
+target_link_libraries(ActionCrawl ${OGRE_LIBRARIES} ${OIS_LIBRARIES})
