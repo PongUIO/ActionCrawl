@@ -71,6 +71,7 @@ void BaseApplication::chooseSceneManager(void)
 {
 	// Get the SceneManager, in this case a generic one
 	mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC);
+	mEngine = new GameEngine(mSceneMgr);
 }
 //-------------------------------------------------------------------------------------
 void BaseApplication::createCamera(void)
@@ -421,8 +422,7 @@ void BaseApplication::windowClosed(Ogre::RenderWindow* rw)
 }
 
 void BaseApplication::tick(void) {
-	mTestPos -= 0.1;
-	mPlayer->setPosition(60, 60, mTestPos);
+	mEngine->tick();
 }
 
 //-------------------------------------------------------------------------------------
@@ -437,13 +437,6 @@ void BaseApplication::createScene(void)
 	Ogre::Light *light = mSceneMgr->createLight("MainLight");
 	light->setPosition(25.0f, 80.0f, 50.0f);
 
-	Ogre::BillboardSet *set = mSceneMgr->createBillboardSet();
-	set->setDefaultDimensions(10, 10);
-	set->setMaterialName("player");
-	mPlayer = set->createBillboard(60, 60, 60);
-	node = mSceneMgr->getRootSceneNode()->createChildSceneNode("playerNode");
-	node->attachObject(set);
-	node->setPosition(0, 0, 0);
 
 }
 

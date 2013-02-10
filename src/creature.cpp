@@ -64,3 +64,8 @@ Ogre::Billboard *Creature::getBillboard(void)
 {
 	return mBillboard;
 }
+
+std::string Creature::getResID() 
+{
+	return mResID;
+}

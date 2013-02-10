@@ -35,6 +35,7 @@ http://www.ogre3d.org/tikiwiki/
 #include <SdkTrays.h>
 #include <SdkCameraMan.h>
 
+#include "gameengine.h"
 
 class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener, OgreBites::SdkTrayListener
 {
@@ -51,7 +52,6 @@ class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventList
 		virtual void createCamera(void);
 		virtual void createFrameListener(void);
 		virtual void createScene(void);
-		Ogre::Billboard *mPlayer;
 		double mTestPos;
 		virtual void destroyScene(void);
 		virtual void createViewports(void);
@@ -76,6 +76,8 @@ class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventList
 		//Unattach OIS before window shutdown (very important under Linux)
 		virtual void windowClosed(Ogre::RenderWindow* rw);
 
+		GameEngine *mEngine;
+		
 		Ogre::Root *mRoot;
 		Ogre::Camera* mCamera;
 		Ogre::SceneManager* mSceneMgr;

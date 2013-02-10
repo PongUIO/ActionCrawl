@@ -25,6 +25,7 @@ public:
 	Ogre::Billboard *getBillboard(void);
 	
 	void tick();
+	std::string getResID();
 	
 protected:
 	int mHealth;
