@@ -14,7 +14,7 @@ Tutorial Framework
 http://www.ogre3d.org/tikiwiki/
 -----------------------------------------------------------------------------
  */
-#include "BaseApplication.h"
+#include "baseapplication.h"
 
 //-------------------------------------------------------------------------------------
 	BaseApplication::BaseApplication(void)

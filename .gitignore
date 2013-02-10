@@ -1,2 +1,8 @@
 *~
-
+*.kdev4
+OGRE
+OGRElib
+*.log
+ogre.cfg
+build
+ActionCrawl
