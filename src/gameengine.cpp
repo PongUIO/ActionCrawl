@@ -18,7 +18,7 @@ void GameEngine::tick()
 		Ogre::SceneNode *node;
 		Ogre::BillboardSet *set = mSceneMgr->createBillboardSet();
 		set->setDefaultDimensions(10, 10);
-		set->setMaterialName("player");
+		set->setMaterialName(player.getResID());
 		player.setBillboard(set->createBillboard(0, 0, 0));
 		node = mSceneMgr->getRootSceneNode()->createChildSceneNode("playerNode");
 		node->attachObject(set);
