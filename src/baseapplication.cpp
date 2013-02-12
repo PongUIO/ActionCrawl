@@ -360,13 +360,14 @@ bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
 	{
 		mShutDown = true;
 	}
-
+	mEngine->setKeyState(arg.key, true);
 	mCameraMan->injectKeyDown(arg);
 	return true;
 }
 
 bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
 {
+	mEngine->setKeyState(arg.key, false);
 	mCameraMan->injectKeyUp(arg);
 	return true;
 }

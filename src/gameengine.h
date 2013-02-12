@@ -2,6 +2,7 @@
 #define GAMEENGINE_H
 #include<OgreSceneManager.h>
 #include<OgreBillboardSet.h>
+#include<OISKeyboard.h>
 #include "player.h"
 
 class GameEngine
@@ -12,6 +13,7 @@ public:
 	virtual ~GameEngine();
 	Player player;
 	void tick();
+	void setKeyState(OIS::KeyCode, bool);
 protected:
 	bool init;
 	Ogre::SceneManager *mSceneMgr;

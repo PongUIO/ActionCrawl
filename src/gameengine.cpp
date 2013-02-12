@@ -28,3 +28,7 @@ void GameEngine::tick()
 }
 
 
+void GameEngine::setKeyState(OIS::KeyCode key, bool pressed) 
+{
+	
+}
