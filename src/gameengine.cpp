@@ -3,7 +3,7 @@
 GameEngine::GameEngine(Ogre::SceneManager *manager)
 {
 	mSceneMgr = manager; 
-	init = 0;
+	init = false;
 }
 
 GameEngine::~GameEngine()
@@ -14,7 +14,7 @@ GameEngine::~GameEngine()
 void GameEngine::tick()
 {
 	if (!init) {
-		init = 1;
+		init = true;
 		Ogre::SceneNode *node;
 		Ogre::BillboardSet *set = mSceneMgr->createBillboardSet();
 		set->setDefaultDimensions(10, 10);

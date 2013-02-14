@@ -1,8 +1,7 @@
 #include "player.h"
 
-Player::Player()
+Player::Player() : Creature()
 {
-	Creature();
 	mHealth = 10;
 	mMaxHealth = 10;
 	mResID = "player";

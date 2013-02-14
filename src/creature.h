@@ -1,7 +1,6 @@
 #ifndef CREATURE_H
 #define CREATURE_H
-#include<algorithm>
-#include<string>
+#include<OgreString.h>
 #include<OgreVector3.h>
 #include<OgreBillboard.h>
 
@@ -25,14 +24,14 @@ public:
 	Ogre::Billboard *getBillboard(void);
 	
 	void tick();
-	std::string getResID();
+	Ogre::String getResID();
 	
 protected:
 	int mHealth;
 	int mMaxHealth;
 	Ogre::Vector3 mPosition;
 	Ogre::Billboard *mBillboard;
-	std::string mResID;
+	Ogre::String mResID;
 	
 };
 
