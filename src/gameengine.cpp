@@ -30,7 +30,7 @@ void GameEngine::tick()
 
 void GameEngine::setKeyState(OIS::KeyCode key, bool pressed) 
 {
-	
+	player.feedKey(key, pressed);
 }
 
 void GameEngine::updateCamera(Ogre::Camera *camera)
