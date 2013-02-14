@@ -7,25 +7,20 @@
 
 class Creature
 {
-	
 public:
 	Creature();
 	virtual ~Creature();
-	int getHealth(void);
-	void setHealth(int);
-	void modHealth(int);
-	int getMaxHealth(void);
-	void modMaxHealth(int);
-	void setMaxHealth(int);
 	
-	Ogre::Vector3* getPosition(void);
-	void setPosition(Ogre::Vector3);
+	int &getHealth() { return mHealth; }
+	void heal(int amnt);
+	int &getMaxHealth() { return mMaxHealth; }
+	Ogre::Vector3& getPosition(void) { return mPosition; }
+	const std::string &getResID() const { return mResID; }
 	
-	void setBillboard(Ogre::Billboard*);
-	Ogre::Billboard *getBillboard(void);
+	void setBillboard(Ogre::Billboard *b) { mBillboard = b; }
+	Ogre::Billboard *getBillboard(void) { return mBillboard; }
 	
-	void tick();
-	std::string getResID();
+	virtual void tick();
 	
 protected:
 	int mHealth;
@@ -33,7 +28,6 @@ protected:
 	Ogre::Vector3 mPosition;
 	Ogre::Billboard *mBillboard;
 	std::string mResID;
-	
 };
 
 #endif // CREATURE_H

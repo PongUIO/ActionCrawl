@@ -13,9 +13,9 @@ public:
 	virtual ~GameEngine();
 	Player player;
 	void tick();
+	void init();
 	void setKeyState(OIS::KeyCode, bool);
 protected:
-	bool init;
 	Ogre::SceneManager *mSceneMgr;
 };
 

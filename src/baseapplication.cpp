@@ -199,10 +199,11 @@ void BaseApplication::go(void)
 	mResourcesCfg = "resources.cfg";
 	mPluginsCfg = "plugins.cfg";
 #endif
-
+	
 	if (!setup())
 		return;
-
+	
+	mEngine->init();
 	mRoot->startRendering();
 
 	// clean up
