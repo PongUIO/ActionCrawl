@@ -20,6 +20,7 @@ void GameEngine::init()
 	node = mSceneMgr->getRootSceneNode()->createChildSceneNode("playerNode");
 	node->attachObject(set);
 	node->setPosition(0, 0, 0);
+	mMap = new GameMap(16, 16, mSceneMgr);
 }
 
 void GameEngine::tick()

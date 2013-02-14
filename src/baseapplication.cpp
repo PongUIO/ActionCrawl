@@ -425,9 +425,6 @@ void BaseApplication::createScene(void)
 	mTestPos = 60;
 	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.4f, 0.3f, 0.3f));
 
-	Ogre::Entity *box = mSceneMgr->createEntity("box", "terrain/box.mesh");
-	Ogre::SceneNode *node = mSceneMgr->getRootSceneNode()->createChildSceneNode("boxNode");
-	node->attachObject(box);
 	Ogre::Light *light = mSceneMgr->createLight("MainLight");
 	light->setPosition(25.0f, 80.0f, 50.0f);
 

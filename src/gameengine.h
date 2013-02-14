@@ -4,6 +4,7 @@
 #include<OgreBillboardSet.h>
 #include<OISKeyboard.h>
 #include "player.h"
+#include "gamemap.h"
 
 class GameEngine
 {
@@ -18,6 +19,7 @@ public:
 	void updateCamera(Ogre::Camera *);
 protected:
 	Ogre::SceneManager *mSceneMgr;
+	GameMap *mMap;
 };
 
 #endif // GAMEENGINE_H
