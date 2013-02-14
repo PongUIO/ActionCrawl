@@ -3,6 +3,7 @@
 #include<OgreString.h>
 #include<OgreVector3.h>
 #include<OgreBillboard.h>
+#include<algorithm>
 
 class Creature
 {

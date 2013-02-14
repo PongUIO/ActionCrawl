@@ -15,6 +15,7 @@ public:
 	void tick();
 	void init();
 	void setKeyState(OIS::KeyCode, bool);
+	void updateCamera(Ogre::Camera *);
 protected:
 	Ogre::SceneManager *mSceneMgr;
 };

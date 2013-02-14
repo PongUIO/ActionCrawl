@@ -2,7 +2,7 @@
 
 GameEngine::GameEngine(Ogre::SceneManager *manager)
 {
-	mSceneMgr = manager; 
+	mSceneMgr = manager;
 }
 
 GameEngine::~GameEngine()
@@ -31,4 +31,11 @@ void GameEngine::tick()
 void GameEngine::setKeyState(OIS::KeyCode key, bool pressed) 
 {
 	
+}
+
+void GameEngine::updateCamera(Ogre::Camera *camera)
+{
+	Ogre::Vector3 pos = player.getPosition();
+	camera->setPosition(pos - Ogre::Vector3(0, 80, 80));
+	camera->lookAt(pos);
 }
