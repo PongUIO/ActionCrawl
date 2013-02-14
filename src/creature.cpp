@@ -14,58 +14,12 @@ Creature::~Creature()
 
 }
 
-int Creature::getHealth(void) 
+void Creature::tick()
 {
-	return mHealth;
+	
 }
 
-void Creature::setHealth(int v) 
+void Creature::heal(int amnt)
 {
-	mHealth = std::min(v, mMaxHealth);
-}
-
-void Creature::modHealth(int v) 
-{
-	mHealth = std::min(mHealth+v, mMaxHealth);
-}
-
-int Creature::getMaxHealth(void) 
-{
-	return mMaxHealth;
-}
-
-void Creature::setMaxHealth(int v) 
-{
-	mMaxHealth = v;
-}
-
-void Creature::modMaxHealth(int v) 
-{
-	mMaxHealth += v;
-}
-
-Ogre::Vector3* Creature::getPosition(void)
-{
-	return &mPosition;
-}
-
-void Creature::setPosition(Ogre::Vector3 v)
-{
-	mPosition = v;
-}
-
-
-void Creature::setBillboard(Ogre::Billboard *board)
-{
-	mBillboard = board;
-}
-
-Ogre::Billboard *Creature::getBillboard(void)
-{
-	return mBillboard;
-}
-
-Ogre::String Creature::getResID() 
-{
-	return mResID;
+	mHealth = std::min(mHealth+amnt, mMaxHealth);
 }

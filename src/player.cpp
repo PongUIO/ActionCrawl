@@ -14,6 +14,8 @@ Player::~Player()
 
 void Player::tick()
 {
+	Creature::tick();
+	
 	mPosition.x += 0.1;
 	mBillboard->setPosition(mPosition);
 }

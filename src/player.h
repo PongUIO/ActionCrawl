@@ -4,10 +4,10 @@
 
 class Player : public Creature
 {
-	
 public:
 	Player();
 	virtual ~Player();
+	
 	void tick();
 };
 
