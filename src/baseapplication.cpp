@@ -430,8 +430,6 @@ void BaseApplication::createScene(void)
 
 	Ogre::Light *light = mSceneMgr->createLight("MainLight");
 	light->setPosition(25.0f, 80.0f, 50.0f);
-
-
 }
 
 

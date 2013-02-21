@@ -4,13 +4,15 @@
 #include<OgreSceneManager.h>
 #include<OgreEntity.h>
 #include<OgreManualObject.h>
+#include "gamedefines.h"
 
 class GameMap
 {
 public:
-	GameMap(int x, int y, Ogre::SceneManager*);
+	GameMap(int, int, Ogre::SceneManager*);
 	void updateManualObject(void);
 	virtual ~GameMap();
+	bool checkCollision(int, int);
 protected:
 	MapTile **mMap;
 	int mXSize, mYSize;

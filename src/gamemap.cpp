@@ -19,6 +19,7 @@ GameMap::GameMap(int x, int y, Ogre::SceneManager *manager)
 			mMap[i][j] = MapTile();
 		}
 	}
+	mMap[1][1].setDestroyed(false);
 	updateManualObject();
 }
 
@@ -32,14 +33,22 @@ void GameMap::updateManualObject(void )
 	for (int i = 0; i < mXSize; i++) {
 		for (int j = 0; j < mYSize; j++) {
 			count+=4;
-			mMObject->position(i*10, j*10, 0);
-			mMObject->position(i*10, j*10+10, 0);
-			mMObject->position(i*10+10, j*10+10, 0);
-			mMObject->position(i*10+10, j*10, 0);
+			int dest = (1-mMap[i][j].getDestroyed())*10;
+			mMObject->position(i*TILESIZE+TILESIZE, j*TILESIZE, dest);
+			mMObject->position(i*TILESIZE+TILESIZE, j*TILESIZE+TILESIZE, dest);
+			mMObject->position(i*TILESIZE, j*TILESIZE+TILESIZE, dest);
+			mMObject->position(i*TILESIZE, j*TILESIZE, dest);
 			mMObject->quad(count-4, count-3, count-2, count-1);
 		}
 	}
 	mMObject->end();
+}
+
+bool GameMap::checkCollision(int x, int y)
+{
+	return (x < 0) || (x > mXSize*TILESIZE)
+	|| (y < 0) || (y > mYSize*TILESIZE)
+	|| !mMap[x/TILESIZE][y/TILESIZE].getDestroyed();
 }
 
 

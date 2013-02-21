@@ -2,11 +2,12 @@
 #define PLAYER_H
 #include <bitset>
 #include "creature.h"
+class GameEngine;
 
 class Player : public Creature
 {
 public:
-	Player();
+	Player(GameEngine *);
 	virtual ~Player();
 	
 	void tick();
@@ -23,7 +24,7 @@ private:
 		IfMax = 4
 	};
 	std::bitset<IfMax> mInputFlag;
-	
+	GameEngine *mEngine;
 };
 
 #endif // PLAYER_H

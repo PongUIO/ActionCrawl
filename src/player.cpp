@@ -1,11 +1,13 @@
 #include <OISKeyboard.h>
 #include "player.h"
+#include "gameengine.h"
 
-Player::Player() : Creature()
+Player::Player(GameEngine *engine) : Creature()
 {
 	mHealth = 10;
 	mMaxHealth = 10;
 	mResID = "player";
+	mEngine = engine;
 	mInputFlag.reset();
 }
 
@@ -20,11 +22,14 @@ void Player::tick()
 	
 	Ogre::Vector3 move = Ogre::Vector3();
 	move.x = move.y = move.z = 0;
-	if(mInputFlag[IfLeft]) move.x += 0.5;
-	if(mInputFlag[IfRight]) move.x -= 0.5;
+	if(mInputFlag[IfLeft]) move.x -= 0.5;
+	if(mInputFlag[IfRight]) move.x += 0.5;
 	if(mInputFlag[IfForward]) move.y += 0.5;
 	if(mInputFlag[IfBack]) move.y -= 0.5;
 	mPosition += move;
+	if (mEngine->checkCollision(mPosition.x, mPosition.y)) {
+		mPosition-=move;
+	}
 	
 	mBillboard->setPosition(mPosition);
 }

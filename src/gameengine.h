@@ -18,6 +18,7 @@ public:
 	void setKeyState(OIS::KeyCode, bool);
 	void updateCamera(Ogre::Camera *);
 	bool getInit() { return mInitialized; }
+	bool checkCollision(int, int);
 protected:
 	Ogre::SceneManager *mSceneMgr;
 	GameMap *mMap;
