@@ -2,6 +2,7 @@
 
 GameEngine::GameEngine(Ogre::SceneManager *manager)
 {
+	mInitialized = false;
 	mSceneMgr = manager;
 }
 
@@ -21,6 +22,7 @@ void GameEngine::init()
 	node->attachObject(set);
 	node->setPosition(0, 0, 0);
 	mMap = new GameMap(16, 16, mSceneMgr);
+	mInitialized = true;
 }
 
 void GameEngine::tick()
@@ -38,5 +40,5 @@ void GameEngine::updateCamera(Ogre::Camera *camera)
 {
 	Ogre::Vector3 pos = player.getPosition();
 	camera->setPosition(pos - Ogre::Vector3(0, 80, 80));
-	camera->lookAt(pos);
+	camera->lookAt(pos-Ogre::Vector3(0,0,1	));
 }

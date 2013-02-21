@@ -17,9 +17,11 @@ public:
 	void init();
 	void setKeyState(OIS::KeyCode, bool);
 	void updateCamera(Ogre::Camera *);
+	bool getInit() { return mInitialized; }
 protected:
 	Ogre::SceneManager *mSceneMgr;
 	GameMap *mMap;
+	bool mInitialized;
 };
 
 #endif // GAMEENGINE_H

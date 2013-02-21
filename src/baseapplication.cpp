@@ -415,8 +415,10 @@ void BaseApplication::windowClosed(Ogre::RenderWindow* rw)
 }
 
 void BaseApplication::tick(void) {
-	mEngine->tick();
-	mEngine->updateCamera(mCamera);
+	if (mEngine->getInit()) {
+		mEngine->tick();
+		mEngine->updateCamera(mCamera);
+	}
 }
 
 //-------------------------------------------------------------------------------------
