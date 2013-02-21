@@ -12,7 +12,7 @@ class GameEngine
 public:
 	GameEngine(Ogre::SceneManager*);
 	virtual ~GameEngine();
-	Player player;
+	Player *player;
 	void tick();
 	void init();
 	void setKeyState(OIS::KeyCode, bool);

@@ -19,6 +19,7 @@ void Player::tick()
 	Creature::tick();
 	
 	Ogre::Vector3 move = Ogre::Vector3();
+	move.x = move.y = move.z = 0;
 	if(mInputFlag[IfLeft]) move.x += 0.5;
 	if(mInputFlag[IfRight]) move.x -= 0.5;
 	if(mInputFlag[IfForward]) move.y += 0.5;

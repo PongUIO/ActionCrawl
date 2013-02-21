@@ -16,8 +16,9 @@ void GameEngine::init()
 	Ogre::SceneNode *node;
 	Ogre::BillboardSet *set = mSceneMgr->createBillboardSet();
 	set->setDefaultDimensions(10, 10);
-	set->setMaterialName(player.getResID());
-	player.setBillboard(set->createBillboard(0, 0, 0));
+	player = new Player();
+	set->setMaterialName(player->getResID());
+	player->setBillboard(set->createBillboard(0, 0, 0));
 	node = mSceneMgr->getRootSceneNode()->createChildSceneNode("playerNode");
 	node->attachObject(set);
 	node->setPosition(0, 0, 0);
@@ -27,18 +28,20 @@ void GameEngine::init()
 
 void GameEngine::tick()
 {
-	player.tick();
+	player->tick();
 }
 
 
 void GameEngine::setKeyState(OIS::KeyCode key, bool pressed) 
 {
-	player.feedKey(key, pressed);
+	player->feedKey(key, pressed);
 }
 
 void GameEngine::updateCamera(Ogre::Camera *camera)
 {
-	Ogre::Vector3 pos = player.getPosition();
+	Ogre::Vector3 pos = player->getPosition();
 	camera->setPosition(pos - Ogre::Vector3(0, 80, 80));
-	camera->lookAt(pos-Ogre::Vector3(0,0,1	));
+	camera->lookAt(pos);
+	camera->setNearClipDistance(1);
+	camera->setFarClipDistance(500);
 }

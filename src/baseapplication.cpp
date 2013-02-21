@@ -81,7 +81,8 @@ void BaseApplication::createCamera(void)
 	mCamera->setPosition(Ogre::Vector3(0,0,80));
 	// Look back along -Z
 	mCamera->lookAt(Ogre::Vector3(0,0,-300));
-	mCamera->setNearClipDistance(5);
+	mCamera->setNearClipDistance(1);
+	mCamera->setFarClipDistance(500);
 
 }
 //-------------------------------------------------------------------------------------
@@ -369,19 +370,19 @@ bool BaseApplication::keyReleased( const OIS::KeyEvent &arg )
 
 bool BaseApplication::mouseMoved( const OIS::MouseEvent &arg )
 {
-	if (mTrayMgr->injectMouseMove(arg)) return true;
+	//if (mTrayMgr->injectMouseMove(arg)) return true;
 	return true;
 }
 
 bool BaseApplication::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
-	if (mTrayMgr->injectMouseDown(arg, id)) return true;
+	//if (mTrayMgr->injectMouseDown(arg, id)) return true;
 	return true;
 }
 
 bool BaseApplication::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
-	if (mTrayMgr->injectMouseUp(arg, id)) return true;
+	//if (mTrayMgr->injectMouseUp(arg, id)) return true;
 	return true;
 }
 
