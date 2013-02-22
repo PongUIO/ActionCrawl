@@ -46,8 +46,9 @@ void GameMap::updateManualObject(void )
 
 bool GameMap::checkCollision(int x, int y)
 {
-	return (x < 0) || (x > mXSize*TILESIZE)
-	|| (y < 0) || (y > mYSize*TILESIZE)
+	
+	return (x < 0) || (x > (mXSize*TILESIZE-1))
+	|| (y < 0) || (y > (mYSize*TILESIZE-1))
 	|| !mMap[x/TILESIZE][y/TILESIZE].getDestroyed();
 }
 
