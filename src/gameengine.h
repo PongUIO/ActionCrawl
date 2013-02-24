@@ -5,6 +5,7 @@
 #include<OISKeyboard.h>
 #include "player.h"
 #include "gamemap.h"
+#include "tilesetmanager.h"
 
 class GameEngine
 {
@@ -12,7 +13,6 @@ class GameEngine
 public:
 	GameEngine(Ogre::SceneManager*);
 	virtual ~GameEngine();
-	Player *player;
 	void tick();
 	void init();
 	void setKeyState(OIS::KeyCode, bool);
@@ -23,6 +23,10 @@ protected:
 	Ogre::SceneManager *mSceneMgr;
 	GameMap *mMap;
 	bool mInitialized;
+	Player *mPlayer;
+	TileSetManager mTileSetMgr;
+	
 };
 
 #endif // GAMEENGINE_H
+
