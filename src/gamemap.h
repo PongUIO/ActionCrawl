@@ -10,7 +10,7 @@
 class GameMap
 {
 public:
-	GameMap(int, int, Ogre::SceneManager*, TileSetManager*);
+	GameMap(int, int, Biome, Ogre::SceneManager*, TileSetManager*);
 	void updateManualObject(void);
 	virtual ~GameMap();
 	bool checkCollision(int, int);
@@ -19,7 +19,8 @@ protected:
 	int mXSize, mYSize;
 	Ogre::ManualObject *mMObject;
 	TileSetManager *mTileSetMgr;
-	void drawSurface(TileSide side, int x, int y, bool dest, uint32_t *count);
+	void generateMap(Biome);
+	void drawSurface(TileSide, int, int, bool, uint32_t *);
 };
 
 #endif // GAMEMAP_H

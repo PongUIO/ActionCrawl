@@ -3,7 +3,7 @@
 #include<OgreStringConverter.h>
 #include<OgreManualObject.h>
 
-GameMap::GameMap(int x, int y, Ogre::SceneManager *manager, TileSetManager *mgr)
+GameMap::GameMap(int x, int y, Biome biome, Ogre::SceneManager *manager, TileSetManager *mgr)
 {
 	mTileSetMgr = mgr;
 	mMObject = manager->createManualObject();
@@ -20,9 +20,23 @@ GameMap::GameMap(int x, int y, Ogre::SceneManager *manager, TileSetManager *mgr)
 			mMap[i][j] = new MapTile(mTileSetMgr);
 		}
 	}
-	mMap[1][1]->setDestroyed(false);
+	generateMap(biome);
 	updateManualObject();
 }
+
+void GameMap::generateMap(Biome biome)
+{
+	if (biome == EMPTY) {
+		for (int i = 1; i < mXSize-1; i++) {
+			for (int j = 1; j < mYSize-1; j++) {
+				mMap[i][j]->setDestroyed(true);
+			}
+		}
+	} else if (biome == DUNGEON) {
+		//Do something
+	}
+}
+
 
 void GameMap::updateManualObject(void)
 {
@@ -67,21 +81,37 @@ void GameMap::drawSurface(TileSide side, int x, int y, bool dest, uint32_t *coun
 		mMObject->position(xt, yt+TILESIZE, z);
 		mMObject->position(xt, yt, z);
 	} else if (side == LEFT) {
+		x -= 1;
+		if (x < 0 || x >= mXSize || !mMap[x][y]->getDestroyed()) {
+			return;
+		}
 		mMObject->position(xt, yt, 0);
 		mMObject->position(xt, yt, TILESIZE);
 		mMObject->position(xt, yt+TILESIZE, TILESIZE);
 		mMObject->position(xt, yt+TILESIZE, 0);
 	} else if (side == DOWN) {
+		y -= 1;
+		if (y < 0 || y >= mYSize || !mMap[x][y]->getDestroyed()) {
+			return;
+		}
 		mMObject->position(xt, yt, 0);
 		mMObject->position(xt+TILESIZE, yt, 0);
 		mMObject->position(xt+TILESIZE, yt, TILESIZE);
 		mMObject->position(xt, yt,TILESIZE);
 	} else if (side == RIGHT) {
+		x += 1;
+		if (x < 0 || x >= mXSize || !mMap[x][y]->getDestroyed()) {
+			return;
+		}
 		mMObject->position(xt+TILESIZE, yt, 0);
 		mMObject->position(xt+TILESIZE, yt+TILESIZE, 0);
 		mMObject->position(xt+TILESIZE, yt+TILESIZE, TILESIZE);
 		mMObject->position(xt+TILESIZE, yt, TILESIZE);
 	} else if (side == UP) {
+		y += 1;
+		if (y < 0 || y >= mYSize || !mMap[x][y]->getDestroyed()) {
+			return;
+		}
 		mMObject->position(xt, yt + TILESIZE, 0);
 		mMObject->position(xt, yt + TILESIZE,TILESIZE);
 		mMObject->position(xt+TILESIZE, yt + TILESIZE, TILESIZE);
