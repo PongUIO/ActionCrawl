@@ -25,7 +25,7 @@ void GameEngine::init()
 	node = mSceneMgr->getRootSceneNode()->createChildSceneNode("playerNode");
 	node->attachObject(set);
 	node->setPosition(0, 0, 4);
-	mMap = new GameMap(16, 16, EMPTY, mSceneMgr, &mTileSetMgr);
+	mMap = new GameMap(256, 256, DUNGEON, mSceneMgr, &mTileSetMgr);
 	mInitialized = true;
 }
 

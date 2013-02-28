@@ -2,9 +2,11 @@
 #include<OgreString.h>
 #include<OgreStringConverter.h>
 #include<OgreManualObject.h>
+#include<boost/random.hpp>
 
 GameMap::GameMap(int x, int y, Biome biome, Ogre::SceneManager *manager, TileSetManager *mgr)
 {
+	mRng.seed();
 	mTileSetMgr = mgr;
 	mMObject = manager->createManualObject();
 	Ogre::SceneNode * node = manager->createSceneNode();
@@ -20,11 +22,15 @@ GameMap::GameMap(int x, int y, Biome biome, Ogre::SceneManager *manager, TileSet
 			mMap[i][j] = new MapTile(mTileSetMgr);
 		}
 	}
-	generateMap(biome);
+	struct MapInfo mapInfo;
+	mapInfo.factor1 = 1000;
+	mapInfo.factor2 = 200;
+	mapInfo.size = 9;
+	generateMap(biome, mapInfo);
 	updateManualObject();
 }
 
-void GameMap::generateMap(Biome biome)
+void GameMap::generateMap(Biome biome, struct MapInfo m)
 {
 	if (biome == EMPTY) {
 		for (int i = 1; i < mXSize-1; i++) {
@@ -33,10 +39,94 @@ void GameMap::generateMap(Biome biome)
 			}
 		}
 	} else if (biome == DUNGEON) {
-		//Do something
+		for (int r = 0; r < m.factor1; r++) {
+			int xs = mRng() % m.size;
+			int ys = mRng() % m.size;
+			int x = (mRng() % (mXSize-2-xs)) + 1;
+			int y = (mRng() % (mYSize-2-ys)) + 1;
+			for (int i = x; i < x + xs; i++) {
+				for (int j = y; j < y + ys; j++) {
+					
+					mMap[i][j]->setDestroyed(true);
+				}
+			}
+		}
+		for (int i = 0; i < 1000; i++) {
+			int xs = mRng() % 10;
+			int ys = mRng() % 10;
+			int x = (mRng() % (mXSize-2-xs)) + 1;
+			int y = (mRng() % (mYSize-2-ys)) + 1;
+			
+			generateTunnel(x, y, x+xs, y+ys, 1, 10);
+		}
+		for (int i = 1; i < mXSize-1; i++) {
+			for (int j = 1; j < mYSize-1; j++) {
+				if (analyzeDestroyed(i, j, 1) >= 2) {
+					mMap[i][j]->setStoreState(true);
+				}
+			}
+		}
+		setAllStoredState();
 	}
 }
 
+void GameMap::setAllStoredState() {
+	for (int i = 0; i < mXSize; i++) {
+		for (int j = 0; j < mYSize; j++) {
+			mMap[i][j]->setDestroyedToStoreState();
+		}
+	}
+}
+
+int GameMap::analyzeDestroyed(int x, int y, int r) {
+	int ret = 0;
+	for (int i = getBoundedX(x-r, 0); i <= getBoundedX(x+r,0); i++) {
+		for (int j = getBoundedX(y-r, 0); j <= getBoundedY(y+r, 0); j++) {
+			if ((i == x && j == y) || (std::abs(i-x) + std::abs(j-y)) > r) {
+				continue;
+			}
+			ret += mMap[i][j]->getDestroyed();
+		}
+	}
+	return ret;
+}
+
+
+void GameMap::generateTunnel(int xf, int yf, int xt, int yt, int maxJitter, int jitterChance) 
+{
+	int xMin = std::min(xf, xt);
+	int xMax = std::max(xf, xt);
+	int yMin = std::min(yf, yt);
+	int yMax = std::max(yf, yt);
+	int xOff = (mRng() % (1+2*maxJitter))-maxJitter, yOff = (mRng() % (1+2*maxJitter))-maxJitter;
+	Ogre::Vector2 carry = Ogre::Vector2(0,0);
+	Ogre::Vector2 prev = carry;
+	mMap[xMin][yMin]->setDestroyed(true);
+	while (xMin+carry.x < xMax || yMin+carry.y < yMax) {
+		if (jitterChance && (int)mRng()%100 < jitterChance) {
+			mMap[getBoundedX(xMin+(int)carry.x+xOff, 1)]
+			[getBoundedY(yMin+(int)prev.y+yOff, 1)]->setDestroyed(true);
+			int fac = 1-2*(mRng()%2);
+			if ((int)mRng()%100 < 50) {
+				xOff = std::min(maxJitter, std::max(-maxJitter, xOff+fac));
+			} else {
+				yOff = std::min(maxJitter, std::max(-maxJitter, yOff+fac));
+			}
+		}
+		Ogre::Vector2 vec = Ogre::Vector2(xMax - xMin, yMax - yMin);
+		vec.normalise();
+		prev = carry;
+		carry += vec;
+		if ((int)prev.x != (int)carry.x) {
+			mMap[getBoundedX(xMin+(int)carry.x+xOff, 1)]
+			[getBoundedY(yMin+(int)prev.y+yOff, 1)]->setDestroyed(true);
+		}
+		if ((int)prev.y != (int)carry.y) {
+			mMap[getBoundedX(xMin+(int)prev.x+xOff, 1)]
+			[getBoundedY(yMin+(int)carry.y+yOff, 1)]->setDestroyed(true);
+		}
+	}
+}
 
 void GameMap::updateManualObject(void)
 {

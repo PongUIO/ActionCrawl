@@ -27,9 +27,9 @@ void Player::tick()
 	if(mInputFlag[IfForward]) move.y += 0.5;
 	if(mInputFlag[IfBack]) move.y -= 0.5;
 	mPosition += move;
-	if (mEngine->checkCollision(mPosition.x, mPosition.y)) {
+	/*if (mEngine->checkCollision(mPosition.x, mPosition.y)) {
 		mPosition-=move;
-	}
+	}*/
 	
 	mBillboard->setPosition(mPosition);
 }
