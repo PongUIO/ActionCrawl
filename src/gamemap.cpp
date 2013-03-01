@@ -97,7 +97,6 @@ int GameMap::analyzeDestroyed(int x, int y, int r) {
 			ret += mMap[i][j]->getDestroyed();
 		}
 	}
-	std::cout << ret;
 	return ret;
 }
 
