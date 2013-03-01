@@ -25,6 +25,8 @@ GameMap::GameMap(int x, int y, Biome biome, Ogre::SceneManager *manager, TileSet
 	struct MapInfo mapInfo;
 	mapInfo.factor1 = 1000;
 	mapInfo.factor2 = 200;
+	mapInfo.factor3 = 70;
+	mapInfo.factor4 = 4;
 	mapInfo.size = 9;
 	generateMap(biome, mapInfo);
 	updateManualObject();
@@ -61,12 +63,19 @@ void GameMap::generateMap(Biome biome, struct MapInfo m)
 		}
 		for (int i = 1; i < mXSize-1; i++) {
 			for (int j = 1; j < mYSize-1; j++) {
-				if (analyzeDestroyed(i, j, 1) >= 2) {
+				if (mMap[i][j]->getDestroyed() || (analyzeDestroyed(i, j, 1) >= 2 && (int)mRng()%100 < m.factor3)) {
 					mMap[i][j]->setStoreState(true);
 				}
 			}
 		}
 		setAllStoredState();
+		for (int i = 1; i < mXSize-1; i++) {
+			for (int j = 1; j < mYSize-1; j++) {
+				if ((int)mRng()%100 < m.factor4) {
+					mMap[i][j]->setDestroyed(!mMap[i][j]->getDestroyed());
+				}
+			}
+		}
 	}
 }
 
@@ -88,6 +97,7 @@ int GameMap::analyzeDestroyed(int x, int y, int r) {
 			ret += mMap[i][j]->getDestroyed();
 		}
 	}
+	std::cout << ret;
 	return ret;
 }
 

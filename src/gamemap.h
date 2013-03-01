@@ -10,6 +10,8 @@
 struct MapInfo {
 	int factor1;
 	int factor2;
+	int factor3;
+	int factor4;
 	int size;
 };
 
