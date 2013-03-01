@@ -2,7 +2,7 @@
 #define GAMEDEFINES_H
 #define WORLDSCALE 10
 #define TILESIZE 12
-enum TileSide {TOP=0, LEFT, DOWN, RIGHT, UP};
+enum TileSide {TOP=0, LEFT=1, DOWN=2, RIGHT=3, UP=4};
 enum Biome {EMPTY=0, DUNGEON};
 
 #endif

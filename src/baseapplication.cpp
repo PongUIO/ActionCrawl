@@ -425,7 +425,6 @@ void BaseApplication::tick(void) {
 //-------------------------------------------------------------------------------------
 void BaseApplication::createScene(void)
 {
-	mTestPos = 60;
 	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.4f, 0.3f, 0.3f));
 
 	Ogre::Light *light = mSceneMgr->createLight("MainLight");

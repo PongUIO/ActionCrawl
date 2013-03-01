@@ -3,16 +3,18 @@
 #include<OgreStringConverter.h>
 #include<OgreManualObject.h>
 #include<boost/random.hpp>
+#include<stdlib.h>
 
 GameMap::GameMap(int x, int y, Biome biome, Ogre::SceneManager *manager, TileSetManager *mgr)
 {
 	mRng.seed();
 	mTileSetMgr = mgr;
-	mMObject = manager->createManualObject();
-	Ogre::SceneNode * node = manager->createSceneNode();
+	mMgr = manager;
+	mMObject = mMgr->createManualObject();
+	Ogre::SceneNode * node = mMgr->createSceneNode();
 	node->attachObject(mMObject);
 	node->setPosition(0,0,0);
-	manager->getRootSceneNode()->addChild(node);
+	mMgr->getRootSceneNode()->addChild(node);
 	mXSize = x;
 	mYSize = y;
 	mMap = new MapTile**[mXSize];
@@ -28,10 +30,32 @@ GameMap::GameMap(int x, int y, Biome biome, Ogre::SceneManager *manager, TileSet
 	mapInfo.factor3 = 50;
 	mapInfo.factor4 = 4;
 	mapInfo.corrode = 1;
+	mapInfo.torchChance = 1;
 	mapInfo.size = 9;
 	generateMap(biome, mapInfo);
 	updateManualObject();
+	updateTorches();
 }
+
+void GameMap::updateTorches()
+{
+	int c = 0;
+	for (int i = 1; i < mXSize-1; i++) {
+		for (int j = 1; j < mYSize-1; j++) {
+			for (int k = 0; k < 4; k++) {
+				if (mMap[i][j]->getTorch(k+1)) {
+					char buf[100];
+					std::snprintf(buf, sizeof(buf), "light%d", c);
+					Ogre::Light *light = mMgr->createLight(buf);
+					mLights.push_back(light);
+					light->setPosition(getRelX(i, (TileSide)(k+1))*TILESIZE, getRelY(j, (TileSide)(k+1))*TILESIZE, 5);
+					c++;
+				}
+			}
+		}
+	}
+}
+
 
 void GameMap::generateMap(Biome biome, struct MapInfo m)
 {
@@ -78,6 +102,39 @@ void GameMap::generateMap(Biome biome, struct MapInfo m)
 		}
 		setAllStoredState();
 	}
+	if (m.torchChance > 0) {
+		for (int i = 1; i < mXSize-1; i++) {
+			for (int j = 1; j < mYSize-1; j++) {
+				int res = analyzeDestroyed(i,j,1);
+				if (res < 4 && mMap[i][j]->getDestroyed() && (int)mRng()%100 < m.torchChance) {
+					int rnd = mRng() % (res+1);
+					int s;
+					for (s = 1; s < 5; s++) {
+						if (rnd == 0) {
+							break;
+						}
+						rnd -= getBoundedDestroyed(i, j, (TileSide)s, true);
+					}
+					mMap[getRelX(i,(TileSide)s)][getRelY(j,(TileSide)s)]->setTorch(flipDirection((TileSide)s), true);
+					
+				}
+			}
+		}
+	}
+}
+TileSide GameMap::flipDirection(TileSide side)
+{
+	if (side == LEFT) {
+		return RIGHT;
+	} else if (side == RIGHT) {
+		return LEFT;
+	}
+	if (side == UP) {
+		return DOWN;
+	} else if (side == DOWN) {
+		return UP;
+	}
+	return TOP;
 }
 
 void GameMap::setAllStoredState() {
@@ -86,6 +143,16 @@ void GameMap::setAllStoredState() {
 			mMap[i][j]->setDestroyedToStoreState();
 		}
 	}
+}
+
+bool GameMap::getBoundedDestroyed(int x, int y, TileSide side, bool existsCheck)
+{
+	x = getRelX(x, side);
+	y = getRelY(y, side);
+	if (x < 0 || x >= mXSize || y < 0 || y >+ mYSize) {
+		return !existsCheck;
+	}
+	return mMap[x][y]->getDestroyed();
 }
 
 int GameMap::analyzeDestroyed(int x, int y, int r) {
@@ -235,5 +302,12 @@ bool GameMap::checkCollision(int x, int y)
 
 GameMap::~GameMap()
 {
-
+	for (int i = 0; i < mXSize; i++) {
+		mMap[i] = new MapTile*[mYSize];
+		for (int j = 0; j < mYSize; j++) {
+			delete mMap[i][j];
+		}
+		delete mMap[i];
+	}
+	delete mMap;
 }

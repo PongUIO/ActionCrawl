@@ -52,7 +52,6 @@ class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventList
 		virtual void createCamera(void);
 		virtual void createFrameListener(void);
 		virtual void createScene(void);
-		double mTestPos;
 		virtual void destroyScene(void);
 		virtual void createViewports(void);
 		virtual void setupResources(void);
