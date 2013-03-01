@@ -8,11 +8,7 @@
 #include "tilesetmanager.h"
 
 struct MapInfo {
-	int factor1;
-	int factor2;
-	int factor3;
-	int factor4;
-	int size;
+	int factor1, factor2, factor3, factor4, size, corrode;
 };
 
 class GameMap
