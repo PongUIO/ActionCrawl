@@ -31,7 +31,9 @@ void Player::tick()
 		mPosition-=move;
 	}*/
 	
-	mBillboard->setPosition(mPosition);
+	if (mBillboard != NULL) {
+		mBillboard->setPosition(mPosition);
+	}
 }
 
 void Player::feedKey(const OIS::KeyCode &key, bool press)

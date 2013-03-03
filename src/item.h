@@ -1,35 +1,35 @@
-#ifndef CREATURE_H
-#define CREATURE_H
+#ifndef ITEM_H
+#define ITEM_H
+
+#include "gamedefines.h"
+
 #include<OgreString.h>
 #include<OgreVector3.h>
 #include<OgreBillboard.h>
 #include<algorithm>
+
 #include "ibillboarditem.h"
 #include "ipositioneditem.h"
 
-class Creature : public IBillboardItem, public IPositionedItem
+class Item : public IBillboardItem, public IPositionedItem
 {
 public:
-	Creature();
-	virtual ~Creature();
-	
-	int &getHealth() { return mHealth; }
-	void heal(int amnt);
-	int &getMaxHealth() { return mMaxHealth; }
-	Ogre::Vector3& getPosition(void) { return mPosition; }
+	Item();
+	virtual ~Item();
 	const Ogre::String &getResID() const { return mResID; }
-	
+	Ogre::Vector3& getPosition(void) { return mPosition; }
 	void setBillboard(Ogre::Billboard *b) { mBillboard = b; }
 	Ogre::Billboard *getBillboard(void) { return mBillboard; }
 	
-	virtual void tick();
-	
+	void tick();
 protected:
-	int mHealth;
-	int mMaxHealth;
+	
+	
 	Ogre::Vector3 mPosition;
 	Ogre::Billboard *mBillboard;
 	Ogre::String mResID;
+	bool mInInventory;
+	ItemType mItemType;
 };
 
-#endif // CREATURE_H
+#endif // ITEM_H

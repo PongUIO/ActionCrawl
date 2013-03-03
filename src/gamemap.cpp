@@ -34,7 +34,7 @@ GameMap::GameMap(int x, int y, Biome biome, Ogre::SceneManager *manager, TileSet
 	mapInfo.size = 9;
 	generateMap(biome, mapInfo);
 	updateManualObject();
-	updateTorches();
+	//updateTorches();
 }
 
 void GameMap::updateTorches()
