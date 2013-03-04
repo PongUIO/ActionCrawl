@@ -19,8 +19,6 @@ public:
 	void tick();
 	
 protected:
-	Ogre::Billboard *mBillboard;
-	Ogre::String mResID;
 	bool mInInventory;
 	ItemType mItemType;
 };

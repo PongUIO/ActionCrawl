@@ -27,7 +27,7 @@ void GameEngine::init()
 	mInitialized = true;
 }
 
-void GameEngine::addBillboardItemToWorld(IBillboardItem &item, Ogre::String id)
+void GameEngine::addBillboardItemToWorld(BillboardItem &item, Ogre::String id)
 {
 	Ogre::SceneNode *node;
 	Ogre::BillboardSet *set = mSceneMgr->createBillboardSet();
@@ -35,6 +35,7 @@ void GameEngine::addBillboardItemToWorld(IBillboardItem &item, Ogre::String id)
 	set->setMaterialName(item.getResID());
 	set->setBounds(Ogre::AxisAlignedBox::BOX_INFINITE, 0);
 	item.setBillboard(set->createBillboard(0, 0, 0));
+	item.getSceneName() = id;
 	node = mSceneMgr->getRootSceneNode()->createChildSceneNode(id);
 	node->attachObject(set);
 	node->setPosition(0, 0, 4);

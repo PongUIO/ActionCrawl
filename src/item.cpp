@@ -8,6 +8,7 @@ Item::Item()
 	mItemType = NONE;
 	mInInventory = false;
 	mSceneName = "None";
+	mBillboard = NULL;
 }
 
 Item::~Item()

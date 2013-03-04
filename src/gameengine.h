@@ -7,7 +7,7 @@
 #include "gamemap.h"
 #include "tilesetmanager.h"
 #include "item.h"
-#include "ibillboarditem.h"
+#include "billboarditem.h"
 
 class GameEngine
 {
@@ -28,7 +28,7 @@ protected:
 	bool mInitialized;
 	Player *mPlayer;
 	TileSetManager mTileSetMgr;
-	void addBillboardItemToWorld(IBillboardItem &item, Ogre::String id);
+	void addBillboardItemToWorld(BillboardItem &item, Ogre::String id);
 };
 
 #endif // GAMEENGINE_H

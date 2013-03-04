@@ -8,7 +8,7 @@ class BillboardItem
 {
 public:
 	const Ogre::String &getResID(void) const { return mResID; }
-	const Ogre::String &getSceneName(void) const { return mSceneName; };
+	Ogre::String &getSceneName(void) { return mSceneName; };
 	void setBillboard(Ogre::Billboard *b) { mBillboard = b; }
 	Ogre::Billboard *getBillboard(void) { return mBillboard; }
 	Ogre::String mSceneName, mResID;
