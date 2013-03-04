@@ -8,24 +8,17 @@
 #include<OgreBillboard.h>
 #include<algorithm>
 
-#include "ibillboarditem.h"
-#include "ipositioneditem.h"
+#include "billboarditem.h"
+#include "positioneditem.h"
 
-class Item : public IBillboardItem, public IPositionedItem
+class Item : public BillboardItem, public PositionedItem
 {
 public:
 	Item();
 	virtual ~Item();
-	const Ogre::String &getResID() const { return mResID; }
-	Ogre::Vector3& getPosition(void) { return mPosition; }
-	void setBillboard(Ogre::Billboard *b) { mBillboard = b; }
-	Ogre::Billboard *getBillboard(void) { return mBillboard; }
-	
 	void tick();
+	
 protected:
-	
-	
-	Ogre::Vector3 mPosition;
 	Ogre::Billboard *mBillboard;
 	Ogre::String mResID;
 	bool mInInventory;

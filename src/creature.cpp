@@ -7,6 +7,7 @@ Creature::Creature()
 	mPosition.x = mPosition.y = mPosition.z = 0;
 	mBillboard = NULL;
 	mResID = "Invalid";
+	mSceneName = "None";
 }
 
 Creature::~Creature()

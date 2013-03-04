@@ -7,6 +7,7 @@ Item::Item()
 	mPosition.x = mPosition.y = mPosition.z = 0;
 	mItemType = NONE;
 	mInInventory = false;
+	mSceneName = "None";
 }
 
 Item::~Item()

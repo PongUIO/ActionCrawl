@@ -4,10 +4,10 @@
 #include<OgreVector3.h>
 #include<OgreBillboard.h>
 #include<algorithm>
-#include "ibillboarditem.h"
-#include "ipositioneditem.h"
+#include "billboarditem.h"
+#include "positioneditem.h"
 
-class Creature : public IBillboardItem, public IPositionedItem
+class Creature : public BillboardItem, public PositionedItem
 {
 public:
 	Creature();
@@ -17,10 +17,6 @@ public:
 	void heal(int amnt);
 	int &getMaxHealth() { return mMaxHealth; }
 	Ogre::Vector3& getPosition(void) { return mPosition; }
-	const Ogre::String &getResID() const { return mResID; }
-	
-	void setBillboard(Ogre::Billboard *b) { mBillboard = b; }
-	Ogre::Billboard *getBillboard(void) { return mBillboard; }
 	
 	virtual void tick();
 	
@@ -28,8 +24,6 @@ protected:
 	int mHealth;
 	int mMaxHealth;
 	Ogre::Vector3 mPosition;
-	Ogre::Billboard *mBillboard;
-	Ogre::String mResID;
 };
 
 #endif // CREATURE_H
