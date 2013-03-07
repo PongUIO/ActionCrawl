@@ -16,7 +16,7 @@ Creature::Creature(GameEngine *engine) : mInventory(engine)
 
 void Creature::pickupItem(Item* item)
 {
-	mTicksToItemPickup = 60;
+	mTicksToItemPickup = 100;
 	mPickupItem = item;
 }
 

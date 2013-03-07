@@ -20,11 +20,10 @@ private:
 		IfRight		= 1,
 		IfForward	= 2,
 		IfBack		= 3,
-		
-		IfMax = 4
+		IfG		= 4,
+		IfMax = 5
 	};
 	std::bitset<IfMax> mInputFlag;
-	GameEngine *mEngine;
 };
 
 #endif // PLAYER_H

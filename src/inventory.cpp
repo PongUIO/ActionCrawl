@@ -15,6 +15,7 @@ Inventory::~Inventory()
 
 void Inventory::addItem(Item* item)
 {
+	item->setInInventory(true);
 	mItems.push_back(item);
 	mEngine->getSceneMgr()->destroySceneNode(item->getSceneName());
 }

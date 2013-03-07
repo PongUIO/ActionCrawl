@@ -19,6 +19,8 @@ public:
 	virtual ~Item();
 	void tick();
 	int getWeight() { return mWeight; }
+	bool getInInventory() { return mInInventory; }
+	void setInInventory(bool v) { mInInventory = v; }
 	
 protected:
 	bool mInInventory;

@@ -20,6 +20,7 @@ public:
 	void init();
 	void setKeyState(OIS::KeyCode, bool);
 	void updateCamera(Ogre::Camera *);
+	std::vector<Item *> *getItems() { return &mItems; }
 	bool getInit() { return mInitialized; }
 	bool checkCollision(int, int);
 	Ogre::SceneManager* getSceneMgr() { return mSceneMgr; }

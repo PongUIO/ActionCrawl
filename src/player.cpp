@@ -18,6 +18,14 @@ Player::~Player()
 void Player::tick()
 {
 	Creature::tick();
+	if (mInputFlag[IfG]) {
+		std::vector<Item *> *items = mEngine->getItems();
+		std::vector<Item *>::iterator itr;
+		for (itr = items->begin(); itr != items->end(); itr++) {
+			Creature::pickupItem((*itr));
+			break;
+		}
+	}
 	
 	Ogre::Vector3 move = Ogre::Vector3();
 	move.x = move.y = move.z = 0;
@@ -25,6 +33,9 @@ void Player::tick()
 	if(mInputFlag[IfRight]) move.x += 0.5;
 	if(mInputFlag[IfForward]) move.y += 0.5;
 	if(mInputFlag[IfBack]) move.y -= 0.5;
+	if (move.length() > 0.01) {
+		Creature::cancelPickup();
+	}
 	mPosition += move;
 	/*if (mEngine->checkCollision(mPosition.x, mPosition.y)) {
 		mPosition-=move;
@@ -43,6 +54,7 @@ void Player::feedKey(const OIS::KeyCode &key, bool press)
 		case OIS::KC_RIGHT:		mInputFlag[IfRight] = press; break;
 		case OIS::KC_UP:		mInputFlag[IfForward] = press; break;
 		case OIS::KC_DOWN:		mInputFlag[IfBack] = press; break;
+		case OIS::KC_G:			mInputFlag[IfG] = press; break;
 		
 		default: ;
 	}

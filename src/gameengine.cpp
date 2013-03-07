@@ -22,7 +22,6 @@ void GameEngine::init()
 	Item *item = new Item(this);
 	item->getPosition() = Ogre::Vector3(5*WORLDSCALE,5*WORLDSCALE,0);
 	mItems.push_back(item);
-	mPlayer->pickupItem(item);
 	addBillboardItemToWorld(*mPlayer, "playerNode");
 	addBillboardItemToWorld(*item, "itemNode");
 	mMap = new GameMap(256, 256, DUNGEON, mSceneMgr, &mTileSetMgr);
@@ -49,8 +48,14 @@ void GameEngine::tick()
 {
 	mPlayer->tick();
 	std::vector<Item *>::iterator itr = mItems.begin();
-	for (itr = mItems.begin(); itr != mItems.end(); itr++) {
-		(*itr)->tick();
+	while (itr != mItems.end()) {
+		if ((*itr)->getInInventory()) {
+			itr = mItems.erase(itr);
+		} else {
+			(*itr)->tick();
+			itr++;
+		}
+		
 	}
 }
 
