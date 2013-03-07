@@ -5,6 +5,7 @@ class Player;
 #include<OgreSceneManager.h>
 #include<OgreBillboardSet.h>
 #include<OISKeyboard.h>
+#include<OgreMovableObject.h>
 #include "gamemap.h"
 #include "tilesetmanager.h"
 #include "item.h"
@@ -24,6 +25,7 @@ public:
 	bool getInit() { return mInitialized; }
 	bool checkCollision(int, int);
 	Ogre::SceneManager* getSceneMgr() { return mSceneMgr; }
+	void addToWorld(Ogre::MovableObject *, Ogre::String);
 protected:
 	Ogre::SceneManager *mSceneMgr;
 	std::vector<Item*> mItems;

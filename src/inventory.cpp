@@ -17,9 +17,22 @@ void Inventory::addItem(Item* item)
 {
 	item->setInInventory(true);
 	mItems.push_back(item);
-	mEngine->getSceneMgr()->destroySceneNode(item->getSceneName());
 }
 
+
+void Inventory::removeItem(Item* item, int x, int y, bool toScene)
+{
+	std::vector<Item *>::iterator itr;
+	for (itr = mItems.begin(); itr != mItems.end(); itr++) {
+		if (*itr == item) {
+			mItems.erase(itr);
+			break;
+		}
+	}
+	item->getPosition() = Ogre::Vector3(x, y, 0);
+	item->setInInventory(false);
+	mEngine->getItems()->push_back(item);
+}
 
 int Inventory::getTotalWeight()
 {

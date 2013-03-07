@@ -18,9 +18,24 @@ Item::~Item()
 
 }
 
+void Item::setInInventory(bool v)
+{
+	bool prev = mInInventory;
+	mInInventory = v;
+	if (prev == v) {
+		return;
+	}
+	if (v) {
+		mBillboard->mParentSet->removeBillboard(mBillboard);
+	} else {
+		mBillboard = mBillboard->mParentSet->createBillboard(mPosition);
+	}
+}
+
+
 void Item::tick()
 {
-	if (mBillboard != NULL) {
+	if (!mInInventory) {
 		mBillboard->setPosition(mPosition);
 	}
 }

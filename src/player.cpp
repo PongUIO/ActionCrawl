@@ -27,6 +27,12 @@ void Player::tick()
 		}
 	}
 	
+	if (mInputFlag[IfH]) {
+		if (mInventory.getNumberOfItems() > 0) {
+			mInventory.removeItem(mInventory.getItem(0), mPosition.x, mPosition.y);
+		}
+	}
+	
 	Ogre::Vector3 move = Ogre::Vector3();
 	move.x = move.y = move.z = 0;
 	if(mInputFlag[IfLeft]) move.x -= 0.5;
@@ -55,6 +61,7 @@ void Player::feedKey(const OIS::KeyCode &key, bool press)
 		case OIS::KC_UP:		mInputFlag[IfForward] = press; break;
 		case OIS::KC_DOWN:		mInputFlag[IfBack] = press; break;
 		case OIS::KC_G:			mInputFlag[IfG] = press; break;
+		case OIS::KC_H:			mInputFlag[IfH] = press; break;
 		
 		default: ;
 	}

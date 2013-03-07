@@ -21,7 +21,8 @@ private:
 		IfForward	= 2,
 		IfBack		= 3,
 		IfG		= 4,
-		IfMax = 5
+		IfH		= 5,
+		IfMax
 	};
 	std::bitset<IfMax> mInputFlag;
 };

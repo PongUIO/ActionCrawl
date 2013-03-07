@@ -20,7 +20,7 @@ public:
 	void tick();
 	int getWeight() { return mWeight; }
 	bool getInInventory() { return mInInventory; }
-	void setInInventory(bool v) { mInInventory = v; }
+	void setInInventory(bool v);
 	
 protected:
 	bool mInInventory;
