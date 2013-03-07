@@ -1,9 +1,10 @@
 #ifndef GAMEENGINE_H
 #define GAMEENGINE_H
+class GameEngine;
+class Player;
 #include<OgreSceneManager.h>
 #include<OgreBillboardSet.h>
 #include<OISKeyboard.h>
-#include "player.h"
 #include "gamemap.h"
 #include "tilesetmanager.h"
 #include "item.h"
@@ -21,6 +22,7 @@ public:
 	void updateCamera(Ogre::Camera *);
 	bool getInit() { return mInitialized; }
 	bool checkCollision(int, int);
+	Ogre::SceneManager* getSceneMgr() { return mSceneMgr; }
 protected:
 	Ogre::SceneManager *mSceneMgr;
 	std::vector<Item*> mItems;
