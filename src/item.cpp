@@ -1,7 +1,8 @@
 #include "item.h"
 
-Item::Item()
+Item::Item(GameEngine *engine)
 {
+	mEngine = engine;
 	mInInventory = false;
 	mResID = "erroritem";
 	mPosition.x = mPosition.y = mPosition.z = 0;
@@ -9,6 +10,7 @@ Item::Item()
 	mInInventory = false;
 	mSceneName = "None";
 	mBillboard = NULL;
+	mWeight = 1;
 }
 
 Item::~Item()

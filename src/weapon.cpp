@@ -1,6 +1,6 @@
 #include "weapon.h"
 
-Weapon::Weapon() : Item()
+Weapon::Weapon(GameEngine *engine) : Item(engine)
 {
 	Item::mItemType = WEAPON;
 	mWeaponType = SWORD;

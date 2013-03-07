@@ -2,12 +2,11 @@
 #include "player.h"
 #include "gameengine.h"
 
-Player::Player(GameEngine *engine) : Creature()
+Player::Player(GameEngine *engine) : Creature(engine)
 {
 	mHealth = 10;
 	mMaxHealth = 10;
 	mResID = "player";
-	mEngine = engine;
 	mInputFlag.reset();
 }
 

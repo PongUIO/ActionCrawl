@@ -1,4 +1,5 @@
 #include "gameengine.h"
+#include "player.h"
 
 GameEngine::GameEngine(Ogre::SceneManager *manager)
 {
@@ -18,9 +19,10 @@ void GameEngine::init()
 	
 	mPlayer = new Player(this);
 	mPlayer->getPosition() = Ogre::Vector3(5*WORLDSCALE,5*WORLDSCALE,0);
-	Item *item = new Item();
+	Item *item = new Item(this);
 	item->getPosition() = Ogre::Vector3(5*WORLDSCALE,5*WORLDSCALE,0);
 	mItems.push_back(item);
+	mPlayer->pickupItem(item);
 	addBillboardItemToWorld(*mPlayer, "playerNode");
 	addBillboardItemToWorld(*item, "itemNode");
 	mMap = new GameMap(256, 256, DUNGEON, mSceneMgr, &mTileSetMgr);
