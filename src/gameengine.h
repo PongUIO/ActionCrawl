@@ -32,7 +32,9 @@ protected:
 	Gorilla::Screen *mScreen;
 	Gorilla::Layer *mLayer;
 	Gorilla::Rectangle *mBackgroundRect, *mHealthBarRect;
-	Ogre::SceneManager *mSceneMgr;
+	Ogre::SceneManager *mSceneMgr; 
+	Ogre::Overlay *mInventoryOverlay;
+	Ogre::OverlayManager *mOverlayMgr;
 	std::vector<Item*> mItems;
 	GameMap *mMap;
 	bool mInitialized;

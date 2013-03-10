@@ -8,6 +8,8 @@ GameEngine::GameEngine(Ogre::SceneManager *manager, Gorilla::Screen *screen)
 	mSceneMgr = manager;
 	mMap = NULL;
 	mHUDSizeFactor = 1.1;
+	mOverlayMgr = Ogre::OverlayManager::getSingletonPtr();
+	mInventoryOverlay = mOverlayMgr->create("GameEngine_inventory");
 }
 
 void GameEngine::setHUDSizeFactor(double factor) {
@@ -85,6 +87,15 @@ void GameEngine::tick()
 			itr++;
 		}
 		
+	}
+	Inventory &inv = mPlayer->getInventory();
+	for (int i = 0; i < inv.getNumberOfItems(); i++) {
+		/*Ogre::OverlayElement *element = mOverlayMgr->createOverlayElement("panel", "item");
+		element->setMetricsMode(Ogre::GMM_RELATIVE);
+		element->setMaterialName(inv.getItem(i)->getResID());
+		element->setPosition(0,0);
+		element->setDimensions(0.1, 0.1);*/
+		//mInventoryOverlay->add2D(element);
 	}
 }
 

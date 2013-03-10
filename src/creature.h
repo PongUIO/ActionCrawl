@@ -23,6 +23,7 @@ public:
 	void pickupItem(Item *item);
 	void cancelPickup();
 	virtual void tick();
+	Inventory &getInventory() { return mInventory; }
 	
 protected:
 	int mHealth;
