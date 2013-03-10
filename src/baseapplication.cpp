@@ -32,6 +32,7 @@ http://www.ogre3d.org/tikiwiki/
 	mMouse(0),
 	mKeyboard(0)
 {
+	mGorilla = NULL;
 }
 
 //-------------------------------------------------------------------------------------
@@ -43,6 +44,9 @@ BaseApplication::~BaseApplication(void)
 	Ogre::WindowEventUtilities::removeWindowEventListener(mWindow, this);
 	windowClosed(mWindow);
 	delete mRoot;
+	if (mGorilla) {
+		//delete mGorilla;
+	}
 }
 
 //-------------------------------------------------------------------------------------
@@ -69,7 +73,6 @@ void BaseApplication::chooseSceneManager(void)
 {
 	// Get the SceneManager, in this case a generic one
 	mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC);
-	mEngine = new GameEngine(mSceneMgr);
 }
 //-------------------------------------------------------------------------------------
 void BaseApplication::createCamera(void)
@@ -145,12 +148,12 @@ void BaseApplication::destroyScene(void)
 void BaseApplication::createViewports(void)
 {
 	// Create one viewport, entire window
-	Ogre::Viewport* vp = mWindow->addViewport(mCamera);
-	vp->setBackgroundColour(Ogre::ColourValue(0,0,0));
+	mViewport = mWindow->addViewport(mCamera);
+	mViewport->setBackgroundColour(Ogre::ColourValue(0,0,0));
 
 	// Alter the camera aspect ratio to match the viewport
 	mCamera->setAspectRatio(
-			Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));
+			Ogre::Real(mViewport->getActualWidth()) / Ogre::Real(mViewport->getActualHeight()));
 }
 //-------------------------------------------------------------------------------------
 void BaseApplication::setupResources(void)
@@ -201,6 +204,10 @@ void BaseApplication::go(void)
 	if (!setup())
 		return;
 	
+	mGorilla = new Gorilla::Silverback();
+	mGorilla->loadAtlas("dejavu");
+	mScreen = mGorilla->createScreen(mViewport, "dejavu");
+	mEngine = new GameEngine(mSceneMgr, mScreen);
 	mEngine->init();
 	mRoot->startRendering();
 

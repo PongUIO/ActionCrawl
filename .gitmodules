@@ -1,3 +1,6 @@
 [submodule "ActionCrawlAssets"]
 	path = ActionCrawlAssets
 	url = knuth.ping.uio.no:/ping/knuth/home0/pong/ActionCrawlAssets
+[submodule "gorilla"]
+	path = gorilla
+	url = git://github.com/betajaen/gorilla.git

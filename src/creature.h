@@ -16,7 +16,7 @@ public:
 	Creature(GameEngine* engine);
 	virtual ~Creature();
 	
-	int &getHealth() { return mHealth; }
+	int getHealth() { return mHealth; }
 	void heal(int amnt);
 	int &getMaxHealth() { return mMaxHealth; }
 	Ogre::Vector3& getPosition(void) { return mPosition; }

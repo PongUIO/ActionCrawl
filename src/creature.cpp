@@ -45,5 +45,5 @@ void Creature::tick()
 
 void Creature::heal(int amnt)
 {
-	mHealth = std::min(mHealth+amnt, mMaxHealth);
+	mHealth = std::max(std::min(mHealth+amnt, mMaxHealth), 0);
 }

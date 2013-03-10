@@ -10,12 +10,13 @@ class Player;
 #include "tilesetmanager.h"
 #include "item.h"
 #include "billboarditem.h"
+#include "../gorilla/Gorilla.h"
 
 class GameEngine
 {
 	
 public:
-	GameEngine(Ogre::SceneManager*);
+	GameEngine(Ogre::SceneManager*, Gorilla::Screen *screen);
 	virtual ~GameEngine();
 	void tick();
 	void init();
@@ -27,6 +28,9 @@ public:
 	Ogre::SceneManager* getSceneMgr() { return mSceneMgr; }
 	void addToWorld(Ogre::MovableObject *, Ogre::String);
 protected:
+	Gorilla::Screen *mScreen;
+	Gorilla::Layer *mLayer;
+	Gorilla::Rectangle *mBackgroundRect, *mHealthBarRect;
 	Ogre::SceneManager *mSceneMgr;
 	std::vector<Item*> mItems;
 	GameMap *mMap;
@@ -34,6 +38,7 @@ protected:
 	Player *mPlayer;
 	TileSetManager mTileSetMgr;
 	void addBillboardItemToWorld(BillboardItem &item, Ogre::String id);
+	void updateHUD();
 };
 
 #endif // GAMEENGINE_H
