@@ -7,6 +7,12 @@ GameEngine::GameEngine(Ogre::SceneManager *manager, Gorilla::Screen *screen)
 	mInitialized = false;
 	mSceneMgr = manager;
 	mMap = NULL;
+	mHUDSizeFactor = 1.1;
+}
+
+void GameEngine::setHUDSizeFactor(double factor) {
+	mHUDSizeFactor = std::max(0.1, factor);
+	resizeHUD();
 }
 
 GameEngine::~GameEngine()
@@ -27,15 +33,26 @@ void GameEngine::init()
 	mMap = new GameMap(256, 256, DUNGEON, mSceneMgr, &mTileSetMgr);
 	mInitialized = true;
 	mLayer = mScreen->createLayer(0);
-	mBackgroundRect = mLayer->createRectangle(0,mScreen->getHeight()-150, 200, 150);
-	mHealthBarRect = mLayer->createRectangle(20, mScreen->getHeight()-130, 160, 20);
+	mBackgroundRect = mLayer->createRectangle(0, 0, 0, 0);
+	mHealthBarRect = mLayer->createRectangle(0, 0, 0, 0);
+	resizeHUD();
+}
+
+void GameEngine::resizeHUD()
+{
+	mBackgroundRect->position(0, mScreen->getHeight()-150*mHUDSizeFactor);
+	mBackgroundRect->width(200*mHUDSizeFactor);
+	mBackgroundRect->height(150*mHUDSizeFactor);
+	mHealthBarRect->position(20*mHUDSizeFactor, mScreen->getHeight() - 130*mHUDSizeFactor);
+	mHealthBarRect->height(20*mHUDSizeFactor);
 	updateHUD();
 }
 
-void GameEngine::updateHUD() {
+void GameEngine::updateHUD() 
+{
 	float prop = double(mPlayer->getHealth())/mPlayer->getMaxHealth();
-	mHealthBarRect->background_colour(Gorilla::rgb(240, 70-prop/2, 70-prop/2));
-	mHealthBarRect->width(prop*160);
+	mHealthBarRect->background_colour(Gorilla::rgb(240, 40-prop/4, 40-prop/4));
+	mHealthBarRect->width(prop*160*mHUDSizeFactor);
 	mBackgroundRect->background_gradient(Gorilla::Gradient_Diagonal, Gorilla::rgb(0,0,0), Gorilla::rgb(100,100*prop,100*prop));
 }
 
@@ -57,7 +74,7 @@ void GameEngine::addBillboardItemToWorld(BillboardItem &item, Ogre::String id)
 void GameEngine::tick()
 {
 	mPlayer->tick();
-	mPlayer->heal(-1);
+	mPlayer->heal(1);
 	updateHUD();
 	std::vector<Item *>::iterator itr = mItems.begin();
 	while (itr != mItems.end()) {

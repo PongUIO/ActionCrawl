@@ -27,6 +27,7 @@ public:
 	bool checkCollision(int, int);
 	Ogre::SceneManager* getSceneMgr() { return mSceneMgr; }
 	void addToWorld(Ogre::MovableObject *, Ogre::String);
+	void setHUDSizeFactor(double factor);
 protected:
 	Gorilla::Screen *mScreen;
 	Gorilla::Layer *mLayer;
@@ -36,9 +37,11 @@ protected:
 	GameMap *mMap;
 	bool mInitialized;
 	Player *mPlayer;
+	double mHUDSizeFactor;
 	TileSetManager mTileSetMgr;
 	void addBillboardItemToWorld(BillboardItem &item, Ogre::String id);
 	void updateHUD();
+	void resizeHUD();
 };
 
 #endif // GAMEENGINE_H
