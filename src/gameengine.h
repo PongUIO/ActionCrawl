@@ -37,7 +37,7 @@ protected:
 	Ogre::OverlayManager *mOverlayMgr;
 	std::vector<Item*> mItems;
 	GameMap *mMap;
-	bool mInitialized;
+	bool mInitialized, mShowingItems;
 	Player *mPlayer;
 	double mHUDSizeFactor;
 	TileSetManager mTileSetMgr;

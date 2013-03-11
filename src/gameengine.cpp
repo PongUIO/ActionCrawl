@@ -4,7 +4,7 @@
 GameEngine::GameEngine(Ogre::SceneManager *manager, Gorilla::Screen *screen)
 {
 	mScreen = screen;
-	mInitialized = false;
+	mInitialized = mShowingItems = false;
 	mSceneMgr = manager;
 	mMap = NULL;
 	mHUDSizeFactor = 1.1;
@@ -88,21 +88,37 @@ void GameEngine::tick()
 		}
 		
 	}
-	Inventory &inv = mPlayer->getInventory();
-	for (int i = 0; i < inv.getNumberOfItems(); i++) {
-		/*Ogre::OverlayElement *element = mOverlayMgr->createOverlayElement("panel", "item");
-		element->setMetricsMode(Ogre::GMM_RELATIVE);
-		element->setMaterialName(inv.getItem(i)->getResID());
-		element->setPosition(0,0);
-		element->setDimensions(0.1, 0.1);*/
-		//mInventoryOverlay->add2D(element);
-	}
 }
 
 
 void GameEngine::setKeyState(OIS::KeyCode key, bool pressed) 
 {
 	mPlayer->feedKey(key, pressed);
+	if (key == OIS::KC_I && pressed) {
+		if (!mShowingItems) {
+			mShowingItems = true;
+			Inventory &inv = mPlayer->getInventory();
+			for (int i = 0; i < inv.getNumberOfItems(); i++) {
+				Ogre::OverlayContainer *element = static_cast<Ogre::OverlayContainer *>(mOverlayMgr->createOverlayElement("Panel", "item"));
+				element->setMetricsMode(Ogre::GMM_RELATIVE);
+				element->setMaterialName(inv.getItem(i)->getResID());
+				element->setPosition(0.5,0.5);
+				element->setDimensions(0.1, 0.1);
+				mInventoryOverlay->add2D(element);
+			}
+			mInventoryOverlay->show();
+		} else {
+			mShowingItems = false;
+			Ogre::Overlay::Overlay2DElementsIterator itr = mInventoryOverlay->get2DElementsIterator();
+			while (itr.hasMoreElements()) {
+				Ogre::OverlayContainer *tmp = itr.getNext();
+				mInventoryOverlay->remove2D(tmp);
+				mOverlayMgr->destroyOverlayElement("item");
+			}
+			mInventoryOverlay->clear();
+			mInventoryOverlay->hide();
+		}
+	}
 }
 
 void GameEngine::updateCamera(Ogre::Camera *camera)
