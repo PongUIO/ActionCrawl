@@ -6,6 +6,8 @@ class Player;
 #include<OgreBillboardSet.h>
 #include<OISKeyboard.h>
 #include<OgreMovableObject.h>
+#include<OgreTextAreaOverlayElement.h>
+#include<OgreFontManager.h>
 #include "gamemap.h"
 #include "tilesetmanager.h"
 #include "item.h"

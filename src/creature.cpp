@@ -9,6 +9,7 @@ Creature::Creature(GameEngine *engine) : mInventory(engine)
 	mPosition.x = mPosition.y = mPosition.z = 0;
 	mBillboard = NULL;
 	mResID = "Invalid";
+	mName = "InvalidCreatureName";
 	mSceneName = "None";
 	mPickupItem = NULL;
 	mTicksToItemPickup = 0;
@@ -16,7 +17,7 @@ Creature::Creature(GameEngine *engine) : mInventory(engine)
 
 void Creature::pickupItem(Item* item)
 {
-	mTicksToItemPickup = 100;
+	mTicksToItemPickup = 10;
 	mPickupItem = item;
 }
 

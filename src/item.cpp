@@ -5,6 +5,7 @@ Item::Item(GameEngine *engine)
 	mEngine = engine;
 	mInInventory = false;
 	mResID = "erroritem";
+	mName = "Error Item Name";
 	mPosition.x = mPosition.y = mPosition.z = 0;
 	mItemType = NONE;
 	mInInventory = false;

@@ -20,18 +20,33 @@ void GameEngine::setHUDSizeFactor(double factor) {
 GameEngine::~GameEngine()
 {
 	delete mPlayer;
-
+	
 }
 
 void GameEngine::init()
 {
+	
+	Ogre::ResourceManager::ResourceMapIterator font = Ogre::FontManager::getSingleton().getResourceIterator();
+	
+	while( font.hasMoreElements() )
+	{
+		font.getNext()->load();
+	}
+	
 	mPlayer = new Player(this);
 	mPlayer->getPosition() = Ogre::Vector3(5*WORLDSCALE,5*WORLDSCALE,0);
+	addBillboardItemToWorld(*mPlayer, "playerNode");
+	
 	Item *item = new Item(this);
 	item->getPosition() = Ogre::Vector3(5*WORLDSCALE,5*WORLDSCALE,0);
 	mItems.push_back(item);
-	addBillboardItemToWorld(*mPlayer, "playerNode");
 	addBillboardItemToWorld(*item, "itemNode");
+	
+	item = new Item(this);
+	item->getPosition() = Ogre::Vector3(10*WORLDSCALE,5*WORLDSCALE,0);
+	mItems.push_back(item);
+	addBillboardItemToWorld(*item, "itemNode2");
+	
 	mMap = new GameMap(256, 256, DUNGEON, mSceneMgr, &mTileSetMgr);
 	mInitialized = true;
 	mLayer = mScreen->createLayer(0);
@@ -99,11 +114,24 @@ void GameEngine::setKeyState(OIS::KeyCode key, bool pressed)
 			mShowingItems = true;
 			Inventory &inv = mPlayer->getInventory();
 			for (int i = 0; i < inv.getNumberOfItems(); i++) {
-				Ogre::OverlayContainer *element = static_cast<Ogre::OverlayContainer *>(mOverlayMgr->createOverlayElement("Panel", "item"));
+				Item *item = inv.getItem(i);
+				Ogre::String tmp = "img" + item->getSceneName();
+				Ogre::OverlayContainer *element = static_cast<Ogre::OverlayContainer *>
+				(mOverlayMgr->createOverlayElement("Panel", tmp));
 				element->setMetricsMode(Ogre::GMM_RELATIVE);
-				element->setMaterialName(inv.getItem(i)->getResID());
-				element->setPosition(0.5,0.5);
-				element->setDimensions(0.1, 0.1);
+				element->setMaterialName(item->getResID());
+				element->setPosition(ICONRELSIZE,(ICONRELSIZE + ICONRELDIST)*(i+1));
+				element->setDimensions(ICONRELSIZE, ICONRELSIZE);
+				Ogre::TextAreaOverlayElement *textarea = static_cast<Ogre::TextAreaOverlayElement*>
+				(mOverlayMgr->createOverlayElement("TextArea", item->getSceneName()));
+				textarea->setMetricsMode(Ogre::GMM_RELATIVE);
+				textarea->setFontName("bluecond");
+				textarea->setCharHeight(ICONRELSIZE);
+				textarea->setDimensions(1,1);
+				textarea->setColour(Ogre::ColourValue(0.6, 0.6, 0.6));
+				textarea->setCaption(item->getName());
+				textarea->setPosition(ICONRELSIZE + ICONRELDIST, 0.0);
+				element->addChild(textarea);
 				mInventoryOverlay->add2D(element);
 			}
 			mInventoryOverlay->show();
@@ -112,8 +140,13 @@ void GameEngine::setKeyState(OIS::KeyCode key, bool pressed)
 			Ogre::Overlay::Overlay2DElementsIterator itr = mInventoryOverlay->get2DElementsIterator();
 			while (itr.hasMoreElements()) {
 				Ogre::OverlayContainer *tmp = itr.getNext();
+				auto children = tmp->getChildIterator();
+				while (children.hasMoreElements()) {
+					auto chld = children.getNext();
+					mOverlayMgr->destroyOverlayElement(chld->getName());
+				}
 				mInventoryOverlay->remove2D(tmp);
-				mOverlayMgr->destroyOverlayElement("item");
+				mOverlayMgr->destroyOverlayElement(tmp);
 			}
 			mInventoryOverlay->clear();
 			mInventoryOverlay->hide();
