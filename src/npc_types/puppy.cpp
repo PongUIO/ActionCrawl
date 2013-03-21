@@ -2,7 +2,7 @@
 
 Puppy::Puppy(GameEngine* engine) : NPC(engine)
 {
-
+	mType = PUPPY;
 }
 
 Puppy::~Puppy()

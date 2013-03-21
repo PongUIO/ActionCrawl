@@ -9,7 +9,7 @@ enum Biome {EMPTY, DUNGEON};
 enum ItemType {NONE, WEAPON, FOOD};
 enum WeaponType {SWORD, MACE, STAFF};
 enum FoodType {MEAT, FRUIT, SPECIAL};
-enum NPC_TYPE {PUPPY};
+enum NpcType {PUPPY};
 enum BillboardListType {NONELIST, INVENTORY, ABILITIES, SPELLS};
 
 #endif
