@@ -38,14 +38,18 @@ protected:
 	Ogre::Overlay *mInventoryOverlay;
 	Ogre::OverlayManager *mOverlayMgr;
 	std::vector<Item*> mItems;
+	BillboardListType mActiveList;
+	
 	GameMap *mMap;
-	bool mInitialized, mShowingItems;
+	bool mInitialized;
 	Player *mPlayer;
 	double mHUDSizeFactor;
 	TileSetManager mTileSetMgr;
 	void addBillboardItemToWorld(BillboardItem &item, Ogre::String id);
 	void updateHUD();
 	void resizeHUD();
+	void createBillboardScreen(BillboardListType type);
+	void removeBillboardScreen();
 };
 
 #endif // GAMEENGINE_H
