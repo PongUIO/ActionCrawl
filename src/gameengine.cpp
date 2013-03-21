@@ -90,6 +90,9 @@ void GameEngine::addBillboardItemToWorld(BillboardItem &item, Ogre::String id)
 
 void GameEngine::tick()
 {
+	if (mShowingItems) {
+		return;
+	}
 	mPlayer->tick();
 	mPlayer->heal(1);
 	updateHUD();
@@ -108,10 +111,19 @@ void GameEngine::tick()
 
 void GameEngine::setKeyState(OIS::KeyCode key, bool pressed) 
 {
-	mPlayer->feedKey(key, pressed);
+	if (!mShowingItems) {
+		mPlayer->feedKey(key, pressed);
+	}
 	if (key == OIS::KC_I && pressed) {
 		if (!mShowingItems) {
 			mShowingItems = true;
+			Ogre::OverlayContainer *bg = static_cast<Ogre::OverlayContainer *>(
+				mOverlayMgr->createOverlayElement("Panel", "itembg"));
+			bg->setMetricsMode(Ogre::GMM_RELATIVE);
+			bg->setDimensions(1-ICONRELDIST*2, 1-ICONRELDIST*2);
+			bg->setPosition(ICONRELDIST, ICONRELDIST);
+			bg->setMaterialName("inventory");
+			mInventoryOverlay->add2D(bg);
 			Inventory &inv = mPlayer->getInventory();
 			for (int i = 0; i < inv.getNumberOfItems(); i++) {
 				Item *item = inv.getItem(i);
