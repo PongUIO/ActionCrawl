@@ -17,7 +17,6 @@ Player::~Player()
 
 void Player::tick()
 {
-	Creature::tick();
 	if (mInputFlag[IfG]) {
 		std::vector<Item *> *items = mEngine->getItems();
 		std::vector<Item *>::iterator itr;
@@ -50,6 +49,7 @@ void Player::tick()
 	if (mBillboard != NULL) {
 		mBillboard->setPosition(mPosition);
 	}
+	Creature::tick();
 }
 
 void Player::feedKey(const OIS::KeyCode &key, bool press)
