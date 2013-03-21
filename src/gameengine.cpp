@@ -88,6 +88,15 @@ void GameEngine::tick()
 		}
 		
 	}
+	while (itr != mCreatures.end()) {
+		if ((*itr)->getInInventory()) {
+			itr = mCreatures.erase(itr);
+		} else {
+			(*itr)->tick();
+			itr++;
+		}
+		
+	}
 }
 
 

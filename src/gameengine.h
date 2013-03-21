@@ -1,6 +1,7 @@
 #ifndef GAMEENGINE_H
 #define GAMEENGINE_H
-class GameEngine;
+
+class Creature;class GameEngine;
 class Player;
 #include<OgreSceneManager.h>
 #include<OgreBillboardSet.h>
@@ -28,6 +29,7 @@ public:
 	Ogre::SceneManager* getSceneMgr() { return mSceneMgr; }
 	void addToWorld(Ogre::MovableObject *, Ogre::String);
 	void setHUDSizeFactor(double factor);
+	void addBillboardItemToWorld(BillboardItem &item, Ogre::String id);
 protected:
 	Gorilla::Screen *mScreen;
 	Gorilla::Layer *mLayer;
@@ -36,12 +38,12 @@ protected:
 	Ogre::Overlay *mInventoryOverlay;
 	Ogre::OverlayManager *mOverlayMgr;
 	std::vector<Item*> mItems;
+	std::vector<Creature*> mCreatures;
 	GameMap *mMap;
 	bool mInitialized, mShowingItems;
 	Player *mPlayer;
 	double mHUDSizeFactor;
 	TileSetManager mTileSetMgr;
-	void addBillboardItemToWorld(BillboardItem &item, Ogre::String id);
 	void updateHUD();
 	void resizeHUD();
 };
