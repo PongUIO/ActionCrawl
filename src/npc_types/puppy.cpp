@@ -1,6 +1,6 @@
 #include "puppy.h"
 
-Puppy::Puppy() : NPC()
+Puppy::Puppy(GameEngine* engine) : NPC(engine)
 {
 
 }

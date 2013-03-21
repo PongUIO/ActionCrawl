@@ -7,7 +7,7 @@ class Puppy: public NPC
 {
 
 	public:
-		Puppy();
+		Puppy(GameEngine* engine);
 		virtual ~Puppy();
 		void tick();
 };

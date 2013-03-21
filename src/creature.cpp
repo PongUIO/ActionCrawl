@@ -34,6 +34,8 @@ Creature::~Creature()
 
 void Creature::tick()
 {
+	assert(mBillboard != NULL && "Creature::tick(), mBillboard == NULL");
+	mBillboard->setPosition(mPosition);
 	if (mPickupItem != NULL) {
 		mTicksToItemPickup -= 1;
 	}

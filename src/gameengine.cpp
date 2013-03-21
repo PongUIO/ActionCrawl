@@ -1,5 +1,6 @@
 #include "gameengine.h"
 #include "player.h"
+#include "npc.h"
 
 GameEngine::GameEngine(Ogre::SceneManager *manager, Gorilla::Screen *screen)
 {
@@ -47,6 +48,12 @@ void GameEngine::init()
 	item->getPosition() = Ogre::Vector3(10*WORLDSCALE,5*WORLDSCALE,0);
 	mItems.push_back(item);
 	addBillboardItemToWorld(*item, "itemNode2");
+	
+	NPC *creature = new NPC(this);
+	creature->getPosition() = Ogre::Vector3(WORLDSCALE, WORLDSCALE, 0);
+//	creature->getPosition() = Ogre::Vector3(10*WORLDSCALE,10*WORLDSCALE,0);
+	mCreatures.push_back(creature);
+//	addBillboardItemToWorld(*creature, "CreatureNode");
 	
 	mMap = new GameMap(256, 256, DUNGEON, mSceneMgr, &mTileSetMgr);
 	mInitialized = true;
@@ -107,13 +114,10 @@ void GameEngine::tick()
 		}
 		
 	}
-	while (itr != mCreatures.end()) {
-		if ((*itr)->getInInventory()) {
-			itr = mCreatures.erase(itr);
-		} else {
-			(*itr)->tick();
-			itr++;
-		}
+	std::vector<Creature*>::iterator ctr = mCreatures.begin();
+	while (ctr != mCreatures.end()) {
+		(*ctr)->tick();
+		ctr++;
 		
 	}
 }

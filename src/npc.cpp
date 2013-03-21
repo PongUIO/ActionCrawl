@@ -1,11 +1,13 @@
 #include "npc.h"
 
-NPC::NPC(GameEngine* engine): Creature(engine)
+NPC::NPC(GameEngine* engine): Creature(engine), mType(PUPPY)
 {
 	mHealth = 10;
 	mMaxHealth = 10;
-	mResID = "npcerror";
-	engine->addBillboardItemToWorld(self, mResID);
+	mResID = "errornpc";
+	mPosition = Ogre::Vector3(10*WORLDSCALE,10*WORLDSCALE,0);
+	engine->addBillboardItemToWorld(*this, "npcnode");
+	std::cout << "asd: " << mBillboard << std::endl;
 }
 
 NPC::~NPC()
