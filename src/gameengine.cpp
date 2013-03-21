@@ -128,8 +128,18 @@ void GameEngine::setKeyState(OIS::KeyCode key, bool pressed)
 
 void GameEngine::createBillboardScreen(BillboardListType type)
 {
-	Ogre::String scrType = "Inventory";
-	Ogre::String materialType = "inventory";
+	Ogre::String scrType = "errorList";
+	Ogre::String materialType = "errorType";
+	BillboardCollection *billboards;
+	switch(type) {
+		case INVENTORY:
+			scrType = "Inventory";
+			materialType = "inventory";
+			billboards = mPlayer->getInventory();
+			break;
+		default:
+			return;
+	}
 	Ogre::OverlayContainer *bg = static_cast<Ogre::OverlayContainer *>(
 		mOverlayMgr->createOverlayElement("Panel", "itembg"));
 	bg->setMetricsMode(Ogre::GMM_RELATIVE);
@@ -137,7 +147,7 @@ void GameEngine::createBillboardScreen(BillboardListType type)
 	bg->setPosition(ICONRELDIST, ICONRELDIST);
 	bg->setMaterialName(materialType);
 	Ogre::TextAreaOverlayElement *listType = static_cast<Ogre::TextAreaOverlayElement*>
-		(mOverlayMgr->createOverlayElement("TextArea", scrType));
+	(mOverlayMgr->createOverlayElement("TextArea", scrType));
 	listType->setMetricsMode(Ogre::GMM_RELATIVE);
 	listType->setPosition(ICONRELSIZE - ICONRELDIST, ICONRELSIZE);
 	listType->setDimensions(1,1);
@@ -147,30 +157,31 @@ void GameEngine::createBillboardScreen(BillboardListType type)
 	listType->setFontName("bluecond");
 	bg->addChild(listType);
 	mInventoryOverlay->add2D(bg);
-	Inventory &inv = mPlayer->getInventory();
-	for (int i = 0; i < inv.getNumberOfItems(); i++) {
-		Item *item = inv.getItem(i);
-		Ogre::String tmp = "img" + item->getSceneName();
+	for (uint i = 0; i < billboards->getNumElements(); i++) {
+		Ogre::String resID = billboards->getResIDForEl(i);
+		Ogre::String name = billboards->getNameForEl(i);
+		Ogre::String sceneName = billboards->getSceneNameForEl(i);
+		Ogre::String tmp = "img" + sceneName;
 		Ogre::OverlayContainer *element = static_cast<Ogre::OverlayContainer *>
 		(mOverlayMgr->createOverlayElement("Panel", tmp));
 		element->setMetricsMode(Ogre::GMM_RELATIVE);
-		element->setMaterialName(item->getResID());
+		element->setMaterialName(resID);
 		element->setPosition(ICONRELSIZE,(ICONRELSIZE + ICONRELDIST)*(i+2));
 		element->setDimensions(ICONRELSIZE, ICONRELSIZE);
 		Ogre::TextAreaOverlayElement *textarea = static_cast<Ogre::TextAreaOverlayElement*>
-		(mOverlayMgr->createOverlayElement("TextArea", item->getSceneName()));
+		(mOverlayMgr->createOverlayElement("TextArea", sceneName));
 		textarea->setMetricsMode(Ogre::GMM_RELATIVE);
 		textarea->setFontName("bluecond");
 		textarea->setCharHeight(ICONRELSIZE);
 		textarea->setDimensions(1,1);
 		textarea->setColour(Ogre::ColourValue(0.6, 0.6, 0.6));
-		textarea->setCaption(item->getName());
+		textarea->setCaption(name);
 		textarea->setPosition(ICONRELSIZE + ICONRELDIST, 0.0);
 		element->addChild(textarea);
 		mInventoryOverlay->add2D(element);
 	}
 	mInventoryOverlay->show();
-
+	
 }
 
 void GameEngine::removeBillboardScreen()
@@ -188,7 +199,7 @@ void GameEngine::removeBillboardScreen()
 	}
 	mInventoryOverlay->clear();
 	mInventoryOverlay->hide();
-
+	
 }
 
 

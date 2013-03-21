@@ -34,6 +34,23 @@ void Inventory::removeItem(Item* item, int x, int y, bool toScene)
 	mEngine->getItems()->push_back(item);
 }
 
+Ogre::String Inventory::getNameForEl(int i)
+{
+	return mItems.at(i)->getName();
+}
+
+Ogre::String Inventory::getResIDForEl(int i)
+{
+	return mItems.at(i)->getResID();
+}
+
+Ogre::String Inventory::getSceneNameForEl(int i)
+{
+	return mItems.at(i)->getSceneName();
+}
+
+
+
 int Inventory::getTotalWeight()
 {
 	int ret = 0;

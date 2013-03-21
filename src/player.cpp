@@ -28,7 +28,7 @@ void Player::tick()
 	}
 	
 	if (mInputFlag[IfH]) {
-		if (mInventory.getNumberOfItems() > 0) {
+		if (mInventory.getNumElements() > 0) {
 			mInventory.removeItem(mInventory.getItem(0), mPosition.x, mPosition.y);
 		}
 	}

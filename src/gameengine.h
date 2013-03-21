@@ -8,6 +8,8 @@ class Player;
 #include<OgreMovableObject.h>
 #include<OgreTextAreaOverlayElement.h>
 #include<OgreFontManager.h>
+#include<algorithm>
+#include<stdlib.h>
 #include "gamemap.h"
 #include "tilesetmanager.h"
 #include "item.h"
