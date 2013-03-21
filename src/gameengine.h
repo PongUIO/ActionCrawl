@@ -7,6 +7,8 @@ class Player;
 #include<OgreBillboardSet.h>
 #include<OISKeyboard.h>
 #include<OgreMovableObject.h>
+#include<OgreTextAreaOverlayElement.h>
+#include<OgreFontManager.h>
 #include "gamemap.h"
 #include "tilesetmanager.h"
 #include "item.h"
@@ -39,13 +41,17 @@ protected:
 	Ogre::OverlayManager *mOverlayMgr;
 	std::vector<Item*> mItems;
 	std::vector<Creature*> mCreatures;
+	BillboardListType mActiveList;
+	
 	GameMap *mMap;
-	bool mInitialized, mShowingItems;
+	bool mInitialized;
 	Player *mPlayer;
 	double mHUDSizeFactor;
 	TileSetManager mTileSetMgr;
 	void updateHUD();
 	void resizeHUD();
+	void createBillboardScreen(BillboardListType type);
+	void removeBillboardScreen();
 };
 
 #endif // GAMEENGINE_H

@@ -4,12 +4,13 @@
 GameEngine::GameEngine(Ogre::SceneManager *manager, Gorilla::Screen *screen)
 {
 	mScreen = screen;
-	mInitialized = mShowingItems = false;
+	mInitialized = false;
 	mSceneMgr = manager;
 	mMap = NULL;
 	mHUDSizeFactor = 1.1;
 	mOverlayMgr = Ogre::OverlayManager::getSingletonPtr();
 	mInventoryOverlay = mOverlayMgr->create("GameEngine_inventory");
+	mActiveList = NONELIST;
 }
 
 void GameEngine::setHUDSizeFactor(double factor) {
@@ -20,18 +21,33 @@ void GameEngine::setHUDSizeFactor(double factor) {
 GameEngine::~GameEngine()
 {
 	delete mPlayer;
-
+	
 }
 
 void GameEngine::init()
 {
+	
+	Ogre::ResourceManager::ResourceMapIterator font = Ogre::FontManager::getSingleton().getResourceIterator();
+	
+	while( font.hasMoreElements() )
+	{
+		font.getNext()->load();
+	}
+	
 	mPlayer = new Player(this);
 	mPlayer->getPosition() = Ogre::Vector3(5*WORLDSCALE,5*WORLDSCALE,0);
+	addBillboardItemToWorld(*mPlayer, "playerNode");
+	
 	Item *item = new Item(this);
 	item->getPosition() = Ogre::Vector3(5*WORLDSCALE,5*WORLDSCALE,0);
 	mItems.push_back(item);
-	addBillboardItemToWorld(*mPlayer, "playerNode");
 	addBillboardItemToWorld(*item, "itemNode");
+	
+	item = new Item(this);
+	item->getPosition() = Ogre::Vector3(10*WORLDSCALE,5*WORLDSCALE,0);
+	mItems.push_back(item);
+	addBillboardItemToWorld(*item, "itemNode2");
+	
 	mMap = new GameMap(256, 256, DUNGEON, mSceneMgr, &mTileSetMgr);
 	mInitialized = true;
 	mLayer = mScreen->createLayer(0);
@@ -75,6 +91,9 @@ void GameEngine::addBillboardItemToWorld(BillboardItem &item, Ogre::String id)
 
 void GameEngine::tick()
 {
+	if (mActiveList != NONELIST) {
+		return;
+	}
 	mPlayer->tick();
 	mPlayer->heal(1);
 	updateHUD();
@@ -102,33 +121,86 @@ void GameEngine::tick()
 
 void GameEngine::setKeyState(OIS::KeyCode key, bool pressed) 
 {
-	mPlayer->feedKey(key, pressed);
+	if (!mActiveList != NONELIST) {
+		mPlayer->feedKey(key, pressed);
+	}
 	if (key == OIS::KC_I && pressed) {
-		if (!mShowingItems) {
-			mShowingItems = true;
-			Inventory &inv = mPlayer->getInventory();
-			for (int i = 0; i < inv.getNumberOfItems(); i++) {
-				Ogre::OverlayContainer *element = static_cast<Ogre::OverlayContainer *>(mOverlayMgr->createOverlayElement("Panel", "item"));
-				element->setMetricsMode(Ogre::GMM_RELATIVE);
-				element->setMaterialName(inv.getItem(i)->getResID());
-				element->setPosition(0.5,0.5);
-				element->setDimensions(0.1, 0.1);
-				mInventoryOverlay->add2D(element);
-			}
-			mInventoryOverlay->show();
-		} else {
-			mShowingItems = false;
-			Ogre::Overlay::Overlay2DElementsIterator itr = mInventoryOverlay->get2DElementsIterator();
-			while (itr.hasMoreElements()) {
-				Ogre::OverlayContainer *tmp = itr.getNext();
-				mInventoryOverlay->remove2D(tmp);
-				mOverlayMgr->destroyOverlayElement("item");
-			}
-			mInventoryOverlay->clear();
-			mInventoryOverlay->hide();
+		if (mActiveList == NONELIST) {
+			mActiveList = INVENTORY;
+			createBillboardScreen(INVENTORY);
+		} else if (mActiveList == INVENTORY) {
+			mActiveList = NONELIST;
+			removeBillboardScreen();
 		}
 	}
 }
+
+void GameEngine::createBillboardScreen(BillboardListType type)
+{
+	Ogre::String scrType = "Inventory";
+	Ogre::String materialType = "inventory";
+	Ogre::OverlayContainer *bg = static_cast<Ogre::OverlayContainer *>(
+		mOverlayMgr->createOverlayElement("Panel", "itembg"));
+	bg->setMetricsMode(Ogre::GMM_RELATIVE);
+	bg->setDimensions(1-ICONRELDIST*2, 1-ICONRELDIST*2);
+	bg->setPosition(ICONRELDIST, ICONRELDIST);
+	bg->setMaterialName(materialType);
+	Ogre::TextAreaOverlayElement *listType = static_cast<Ogre::TextAreaOverlayElement*>
+		(mOverlayMgr->createOverlayElement("TextArea", scrType));
+	listType->setMetricsMode(Ogre::GMM_RELATIVE);
+	listType->setPosition(ICONRELSIZE - ICONRELDIST, ICONRELSIZE);
+	listType->setDimensions(1,1);
+	listType->setCharHeight(ICONRELSIZE);
+	listType->setColour(Ogre::ColourValue(0.6, 0.6, 0.6));
+	listType->setCaption(scrType);
+	listType->setFontName("bluecond");
+	bg->addChild(listType);
+	mInventoryOverlay->add2D(bg);
+	Inventory &inv = mPlayer->getInventory();
+	for (int i = 0; i < inv.getNumberOfItems(); i++) {
+		Item *item = inv.getItem(i);
+		Ogre::String tmp = "img" + item->getSceneName();
+		Ogre::OverlayContainer *element = static_cast<Ogre::OverlayContainer *>
+		(mOverlayMgr->createOverlayElement("Panel", tmp));
+		element->setMetricsMode(Ogre::GMM_RELATIVE);
+		element->setMaterialName(item->getResID());
+		element->setPosition(ICONRELSIZE,(ICONRELSIZE + ICONRELDIST)*(i+2));
+		element->setDimensions(ICONRELSIZE, ICONRELSIZE);
+		Ogre::TextAreaOverlayElement *textarea = static_cast<Ogre::TextAreaOverlayElement*>
+		(mOverlayMgr->createOverlayElement("TextArea", item->getSceneName()));
+		textarea->setMetricsMode(Ogre::GMM_RELATIVE);
+		textarea->setFontName("bluecond");
+		textarea->setCharHeight(ICONRELSIZE);
+		textarea->setDimensions(1,1);
+		textarea->setColour(Ogre::ColourValue(0.6, 0.6, 0.6));
+		textarea->setCaption(item->getName());
+		textarea->setPosition(ICONRELSIZE + ICONRELDIST, 0.0);
+		element->addChild(textarea);
+		mInventoryOverlay->add2D(element);
+	}
+	mInventoryOverlay->show();
+
+}
+
+void GameEngine::removeBillboardScreen()
+{
+	Ogre::Overlay::Overlay2DElementsIterator itr = mInventoryOverlay->get2DElementsIterator();
+	while (itr.hasMoreElements()) {
+		Ogre::OverlayContainer *tmp = itr.getNext();
+		auto children = tmp->getChildIterator();
+		while (children.hasMoreElements()) {
+			auto chld = children.getNext();
+			mOverlayMgr->destroyOverlayElement(chld->getName());
+		}
+		mInventoryOverlay->remove2D(tmp);
+		mOverlayMgr->destroyOverlayElement(tmp);
+	}
+	mInventoryOverlay->clear();
+	mInventoryOverlay->hide();
+
+}
+
+
 
 void GameEngine::updateCamera(Ogre::Camera *camera)
 {
