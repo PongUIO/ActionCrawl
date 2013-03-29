@@ -243,45 +243,65 @@ void GameMap::drawSurface(TileSide side, int x, int y, bool dest, uint32_t *coun
 	int yt = y*TILESIZE;
 	if (side == TOP) {
 		int z = (1-mMap[x][y]->getDestroyed())*TILESIZE;
-		mMObject->position(xt+TILESIZE, yt, z);
-		mMObject->position(xt+TILESIZE, yt+TILESIZE, z);
-		mMObject->position(xt, yt+TILESIZE, z);
+		mMObject->textureCoord(0,0,0);
 		mMObject->position(xt, yt, z);
+		mMObject->textureCoord(1,0,0);
+		mMObject->position(xt+TILESIZE, yt, z);
+		mMObject->textureCoord(1,1,0);
+		mMObject->position(xt+TILESIZE, yt+TILESIZE, z);
+		mMObject->textureCoord(0,1,0);
+		mMObject->position(xt, yt+TILESIZE, z);
 	} else if (side == LEFT) {
 		x -= 1;
 		if (x < 0 || x >= mXSize || !mMap[x][y]->getDestroyed()) {
 			return;
 		}
+		mMObject->textureCoord(0,0,0);
 		mMObject->position(xt, yt, 0);
+		mMObject->textureCoord(0,0,1);
 		mMObject->position(xt, yt, TILESIZE);
+		mMObject->textureCoord(0,1,1);
 		mMObject->position(xt, yt+TILESIZE, TILESIZE);
+		mMObject->textureCoord(0,1,0);
 		mMObject->position(xt, yt+TILESIZE, 0);
 	} else if (side == DOWN) {
 		y -= 1;
 		if (y < 0 || y >= mYSize || !mMap[x][y]->getDestroyed()) {
 			return;
 		}
+		mMObject->textureCoord(0,0,0);
 		mMObject->position(xt, yt, 0);
+		mMObject->textureCoord(1,0,0);
 		mMObject->position(xt+TILESIZE, yt, 0);
+		mMObject->textureCoord(1,1,0);
 		mMObject->position(xt+TILESIZE, yt, TILESIZE);
+		mMObject->textureCoord(0,1,0);
 		mMObject->position(xt, yt,TILESIZE);
 	} else if (side == RIGHT) {
 		x += 1;
 		if (x < 0 || x >= mXSize || !mMap[x][y]->getDestroyed()) {
 			return;
 		}
+		mMObject->textureCoord(0,0,0);
 		mMObject->position(xt+TILESIZE, yt, 0);
+		mMObject->textureCoord(1,0,0);
 		mMObject->position(xt+TILESIZE, yt+TILESIZE, 0);
+		mMObject->textureCoord(1,1,0);
 		mMObject->position(xt+TILESIZE, yt+TILESIZE, TILESIZE);
+		mMObject->textureCoord(0,1,0);
 		mMObject->position(xt+TILESIZE, yt, TILESIZE);
 	} else if (side == UP) {
 		y += 1;
 		if (y < 0 || y >= mYSize || !mMap[x][y]->getDestroyed()) {
 			return;
 		}
+		mMObject->textureCoord(0,0,0);
 		mMObject->position(xt, yt + TILESIZE, 0);
+		mMObject->textureCoord(0,1,0);
 		mMObject->position(xt, yt + TILESIZE,TILESIZE);
+		mMObject->textureCoord(1,1,0);
 		mMObject->position(xt+TILESIZE, yt + TILESIZE, TILESIZE);
+		mMObject->textureCoord(1,0,0);
 		mMObject->position(xt+TILESIZE, yt + TILESIZE, 0);
 	} else {
 		return;
